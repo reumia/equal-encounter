@@ -1,7 +1,7 @@
 <template>
     <div>
-        <label>{{name}}_{{id}}</label>
-        <input type="text" name="" placeholder="">
+        <label>{{name}}{{id}}</label>
+        <input type="text" :name="name + id" :placeholder="name + id">
     </div>
 </template>
 
@@ -11,6 +11,7 @@
         props: ['id', 'name'],
         data () {
             return {
+
             }
         }
     }

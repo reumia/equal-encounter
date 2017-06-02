@@ -1,24 +1,40 @@
 <template>
     <div class="app">
-        <h1>{{ msg }}</h1>
-        <input-component name="poi" id="01"></input-component>
-        <input-component name="poi" id="02"></input-component>
-        <input-component name="poi" id="03"></input-component>
-        <input-component name="poi" id="04"></input-component>
+        <h1 class="title">{{ msg }}</h1>
+        <div class="input-wrap">
+            <select v-model="selected" multiple>
+                <option>37.357579, 127.155871</option>
+                <option>37.387046, 127.102313</option>
+                <option>37.413774, 126.800189</option>
+                <option>37.567141, 126.926875</option>
+            </select>
+        </div>
+        <div class="button-wrap">
+            <button v-on:click="calculate">계산하기</button>
+        </div>
+        <div class="panel">
+            average : {{ average }}
+        </div>
+        <div class="panel">
+            selected : {{ selected }}
+        </div>
     </div>
 </template>
 
 <script>
-    import InputComponent from './components/InputComponent.vue';
-
     export default {
         name: 'app',
-        components: {
-            'input-component': InputComponent
+        methods: {
+            calculate () {
+                const data = this.selected;
+                alert(data);
+            }
         },
         data () {
             return {
-                msg: 'Equal Encounter'
+                msg: 'Equal Encounter',
+                average: '평균값',
+                selected: ''
             }
         }
     }
