@@ -1,5 +1,11 @@
 <template>
     <div class="app">
+        <div class="map-canvas">
+            <gmap-map :center="center" :zoom="17" style="width: 100%; height: 300px">
+                <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center=m.position">
+                </gmap-marker>
+            </gmap-map>
+        </div>
         <h1 class="title">{{ msg }}</h1>
         <div class="input-wrap">
             <select v-model="selected" multiple>
@@ -10,18 +16,24 @@
             </select>
         </div>
         <div class="button-wrap">
-            <button v-on:click="calculate">계산하기</button>
+            <button @click="calculate">계산하기</button>
         </div>
         <div class="panel">
             average : {{ average }}
-        </div>
-        <div class="panel">
-            selected : {{ selected }}
         </div>
     </div>
 </template>
 
 <script>
+    import * as VueGoogleMaps from 'vue2-google-maps';
+    import Vue from 'vue';
+
+    Vue.use(VueGoogleMaps, {
+        load: {
+            key: 'AIzaSyClD1Hi1lIAjnmmE_2k83Qwhy-RddcwH0g'
+        }
+    });
+
     export default {
         name: 'app',
         methods: {
@@ -34,7 +46,16 @@
             return {
                 msg: 'Equal Encounter',
                 average: '평균값',
-                selected: ''
+                selected: [],
+                center: {lat: 37.5662952, lng: 126.9757564},
+                markers: [
+                    {
+                        position: {lat: 37.5662952, lng: 126.9757564}
+                    },
+                    {
+                        position: {lat: 11.0, lng: 11.0}
+                    }
+                ]
             }
         }
     }
@@ -55,4 +76,11 @@
         text-align: center;
     }
 
+    .panel {
+        margin: 10px auto;
+        padding: 20px;
+        max-width: 300px;
+        background-color: #f3f3f3;
+        text-align: left;
+    }
 </style>
