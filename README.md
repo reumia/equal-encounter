@@ -1,18 +1,3 @@
-# equal-encounter
+# 평등한-만남
 
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-```
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+여러 POI들의 평균값을 구해서 모두가 행복하게 만날 수 있는 평균 POI를 알려줍니다.
