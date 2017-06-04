@@ -54,7 +54,7 @@
                     position: latLng,
                     map: this.map,
                     label: emoji.get(':raising_hand:'),
-                    icon: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+                    icon: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAH0lEQVR42mP8z/C/noGKgHHUwFEDRw0cNXDUwJFqIAAwuzHZ9CUUhAAAAABJRU5ErkJggg=='
                 };
 
                 marker = new google.maps.Marker(markerOptions);
@@ -80,7 +80,7 @@
                     arrowStyle: 0,
                     arrowSize: 5,
                     arrowPosition: 50,
-                    backgroundColor: '#fff',
+                    backgroundColor: 'rgba(255,255,255,.9)',
                     height: false,
                     minWidth: 0
                 });
@@ -104,16 +104,21 @@
                 }
             },
             addAverageMarker () {
-                let markerOptions;
+                let markerOptions, marker;
 
                 markerOptions = {
                     position: this.getAverageLatLng(),
                     map: this.map,
                     label: emoji.get(':heart:'),
-                    icon: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+                    icon: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAH0lEQVR42mP8z/C/noGKgHHUwFEDRw0cNXDUwJFqIAAwuzHZ9CUUhAAAAABJRU5ErkJggg=='
                 };
 
-                this.averageMarker = new google.maps.Marker(markerOptions);
+                marker = new google.maps.Marker(markerOptions);
+                marker.addListener('click', () => {
+                    console.log('click~~');
+                });
+
+                this.averageMarker = marker;
             },
             removeAverageMarker () {
                 if (typeof this.averageMarker.setMap !== 'undefined') {
