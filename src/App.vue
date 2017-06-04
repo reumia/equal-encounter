@@ -1,20 +1,30 @@
 <template>
     <div class="app">
         <div id="map-canvas"></div>
-        <h1 class="title">{{ msg }}</h1>
     </div>
 </template>
 
 <script>
     import GoogleMapsLoader from 'google-maps';
     import _ from 'lodash';
+    import emoji from 'node-emoji';
+    import infoBubble from 'js-info-bubble';
 
-    const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let labelIndex = 0;
+    const messages = [
+        '저요!',
+        '나야나!',
+        '여기야~',
+        '호잇',
+        '뿅'
+    ];
 
     export default {
         name: 'app',
         methods: {
+            initCanvas () {
+                const canvas = document.getElementById('map-canvas');
+                this.canvas = canvas;
+            },
             initMap () {
                 GoogleMapsLoader.KEY = 'AIzaSyClD1Hi1lIAjnmmE_2k83Qwhy-RddcwH0g';
                 GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
@@ -25,9 +35,9 @@
                     let options = {
                         zoom: 13,
                         center: this.mapCenter,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
                     };
-                    this.map = new google.maps.Map(document.getElementById('map-canvas'), options);
+                    this.map = new google.maps.Map(this.canvas, options);
                     this.map.addListener('click', this.clickMap);
                 });
             },
@@ -43,13 +53,39 @@
                 markerOptions = {
                     position: latLng,
                     map: this.map,
-                    label: labels[labelIndex ++ % labels.length]
+                    label: emoji.get(':raising_hand:'),
+                    icon: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
                 };
 
                 marker = new google.maps.Marker(markerOptions);
 
+                this.addBubble(marker);
+
                 this.markers.push(marker);
                 this.markersPositions.push(markerOptions.position);
+            },
+            getRandomMessage () {
+                return messages[_.random(0, messages.length - 1)];
+            },
+            addBubble (marker) {
+                let bubble = new InfoBubble({
+                    content: '<div class="bubble">' + this.getRandomMessage() + '</div>',
+                    hideCloseButton: true,
+                    disableAutoPan: true,
+                    disableAnimation: true,
+                    shadowStyle: 0,
+                    padding: 5,
+                    borderRadius: 5,
+                    borderWidth: 0,
+                    arrowStyle: 0,
+                    arrowSize: 5,
+                    arrowPosition: 50,
+                    backgroundColor: '#fff',
+                    height: false,
+                    minWidth: 0
+                });
+
+                bubble.open(this.map, marker);
             },
             getAverageLatLng () {
                 let lat, lng;
@@ -67,13 +103,14 @@
                     lng: lng
                 }
             },
-            initAverageMarker () {
+            addAverageMarker () {
                 let markerOptions;
 
                 markerOptions = {
                     position: this.getAverageLatLng(),
                     map: this.map,
-                    label: 'ㅍ'
+                    label: emoji.get(':heart:'),
+                    icon: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
                 };
 
                 this.averageMarker = new google.maps.Marker(markerOptions);
@@ -86,20 +123,23 @@
         },
         mounted () {
             this.$nextTick(() => {
-                this.initMap();
+                this.initCanvas();
             });
         },
-        watch:{
+        watch: {
+            canvas () {
+                this.initMap();
+            },
             markersPositions () {
                 if (this.markersPositions.length > 1) {
                     this.removeAverageMarker();
-                    this.initAverageMarker();
+                    this.addAverageMarker();
                 }
             }
         },
         data () {
             return {
-                msg: 'Equal Encounter',
+                canvas: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
                 markers: [],
@@ -118,6 +158,13 @@
     }
 
     .app {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
         font-family: sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -135,6 +182,13 @@
 
     #map-canvas {
         width: 100%;
-        height: 300px;
+        height: 100%;
+    }
+
+    .bubble {
+        color: #333;
+        font-size: 12px;
+        font-weight: bold;
+        white-space: nowrap;
     }
 </style>
