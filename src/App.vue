@@ -2,14 +2,12 @@
     <div class="app">
         <div id="map-canvas"></div>
         <h1 class="title">{{ msg }}</h1>
-        <div class="panel">
-
-        </div>
     </div>
 </template>
 
 <script>
     import GoogleMapsLoader from 'google-maps';
+    import _ from 'lodash';
 
     const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let labelIndex = 0;
@@ -34,39 +32,79 @@
                 });
             },
             clickMap (event) {
-                this.addMarker(event.latLng);
-
+                this.addMarker({
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                });
             },
             addMarker (latLng) {
-                let markerOptions = {
-                    position: {
-                        lat: latLng.lat(),
-                        lng: latLng.lng()
-                    },
+                let markerOptions, marker;
+
+                markerOptions = {
+                    position: latLng,
                     map: this.map,
                     label: labels[labelIndex ++ % labels.length]
                 };
-                let marker = new google.maps.Marker(markerOptions);
+
+                marker = new google.maps.Marker(markerOptions);
+
                 this.markers.push(marker);
+                this.markersPositions.push(markerOptions.position);
+            },
+            getAverageLatLng () {
+                let lat, lng;
+
+                lat = _.meanBy(this.markersPositions, (object) => {
+                    return object.lat;
+                });
+
+                lng = _.meanBy(this.markersPositions, (object) => {
+                    return object.lng;
+                });
+
+                return {
+                    lat: lat,
+                    lng: lng
+                }
+            },
+            initAverageMarker () {
+                let markerOptions;
+
+                markerOptions = {
+                    position: this.getAverageLatLng(),
+                    map: this.map,
+                    label: 'ㅍ'
+                };
+
+                this.averageMarker = new google.maps.Marker(markerOptions);
+            },
+            removeAverageMarker () {
+                if (typeof this.averageMarker.setMap !== 'undefined') {
+                    this.averageMarker.setMap(null);
+                }
             }
         },
         mounted () {
-            this.$nextTick(function () {
+            this.$nextTick(() => {
                 this.initMap();
             });
         },
         watch:{
-            markers: function () {
-                console.log(this.markers);
+            markersPositions () {
+                if (this.markersPositions.length < 1) return;
+
+                this.removeAverageMarker();
+                this.initAverageMarker();
             }
         },
         data () {
             return {
                 msg: 'Equal Encounter',
-                average: '평균값',
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
-                markers: []
+                markers: [],
+                markersPositions: [],
+                averageMarker: {}
             }
         }
     }
@@ -88,9 +126,9 @@
     }
 
     .panel {
+        white-space: pre;
         margin: 10px auto;
         padding: 20px;
-        max-width: 300px;
         background-color: #f3f3f3;
         text-align: left;
     }
