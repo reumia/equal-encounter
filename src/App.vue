@@ -91,10 +91,10 @@
         },
         watch:{
             markersPositions () {
-                if (this.markersPositions.length < 1) return;
-
-                this.removeAverageMarker();
-                this.initAverageMarker();
+                if (this.markersPositions.length > 1) {
+                    this.removeAverageMarker();
+                    this.initAverageMarker();
+                }
             }
         },
         data () {
