@@ -1,61 +1,72 @@
 <template>
     <div class="app">
-        <div class="map-canvas">
-            <gmap-map :center="center" :zoom="17" style="width: 100%; height: 300px">
-                <gmap-marker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true" :draggable="true" @click="center=m.position">
-                </gmap-marker>
-            </gmap-map>
-        </div>
+        <div id="map-canvas"></div>
         <h1 class="title">{{ msg }}</h1>
-        <div class="input-wrap">
-            <select v-model="selected" multiple>
-                <option>37.357579, 127.155871</option>
-                <option>37.387046, 127.102313</option>
-                <option>37.413774, 126.800189</option>
-                <option>37.567141, 126.926875</option>
-            </select>
-        </div>
-        <div class="button-wrap">
-            <button @click="calculate">계산하기</button>
-        </div>
         <div class="panel">
-            average : {{ average }}
+
         </div>
     </div>
 </template>
 
 <script>
-    import * as VueGoogleMaps from 'vue2-google-maps';
-    import Vue from 'vue';
+    import GoogleMapsLoader from 'google-maps';
 
-    Vue.use(VueGoogleMaps, {
-        load: {
-            key: 'AIzaSyClD1Hi1lIAjnmmE_2k83Qwhy-RddcwH0g'
-        }
-    });
+    const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let labelIndex = 0;
 
     export default {
         name: 'app',
         methods: {
-            calculate () {
-                const data = this.selected;
-                alert(data);
+            initMap () {
+                GoogleMapsLoader.KEY = 'AIzaSyClD1Hi1lIAjnmmE_2k83Qwhy-RddcwH0g';
+                GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
+                GoogleMapsLoader.LANGUAGE = 'ko';
+                GoogleMapsLoader.REGION = 'KR';
+
+                GoogleMapsLoader.load((google) => {
+                    let options = {
+                        zoom: 13,
+                        center: this.mapCenter,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    this.map = new google.maps.Map(document.getElementById('map-canvas'), options);
+                    this.map.addListener('click', this.clickMap);
+                });
+            },
+            clickMap (event) {
+                this.addMarker(event.latLng);
+
+            },
+            addMarker (latLng) {
+                let markerOptions = {
+                    position: {
+                        lat: latLng.lat(),
+                        lng: latLng.lng()
+                    },
+                    map: this.map,
+                    label: labels[labelIndex ++ % labels.length]
+                };
+                let marker = new google.maps.Marker(markerOptions);
+                this.markers.push(marker);
+            }
+        },
+        mounted () {
+            this.$nextTick(function () {
+                this.initMap();
+            });
+        },
+        watch:{
+            markers: function () {
+                console.log(this.markers);
             }
         },
         data () {
             return {
                 msg: 'Equal Encounter',
                 average: '평균값',
-                selected: [],
-                center: {lat: 37.5662952, lng: 126.9757564},
-                markers: [
-                    {
-                        position: {lat: 37.5662952, lng: 126.9757564}
-                    },
-                    {
-                        position: {lat: 11.0, lng: 11.0}
-                    }
-                ]
+                map: {},
+                mapCenter: {lat: 37.5662952, lng: 126.9757564},
+                markers: []
             }
         }
     }
@@ -82,5 +93,10 @@
         max-width: 300px;
         background-color: #f3f3f3;
         text-align: left;
+    }
+
+    #map-canvas {
+        width: 100%;
+        height: 300px;
     }
 </style>
