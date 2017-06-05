@@ -1,5 +1,8 @@
 <template>
     <div class="app">
+        <div class="button-wrap">
+            <function-button @click="">지도 초기화</function-button>
+        </div>
         <info-bar :latLng="averageMarkerPosition"></info-bar>
         <div class="map-wrap">
             <div id="map-canvas"></div>
@@ -15,13 +18,8 @@
     import InfoBar from './components/InfoBar.vue';
     import transparentIcon from './assets/icon-transparent.png';
 
-    const messages = [
-        '저요!',
-        '나야나!',
-        '여기야~',
-        '호잇',
-        '뿅'
-    ];
+    const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
+    const emojis = ['ok_woman', 'raising_hand', 'information_desk_person'];
 
     export default {
         name: 'app',
@@ -62,7 +60,7 @@
                 markerOptions = {
                     position: latLng,
                     map: this.map,
-                    label: emoji.get(':raising_hand:'),
+                    label: this.getRandomEmoji(),
                     icon: transparentIcon
                 };
 
@@ -75,6 +73,10 @@
             },
             getRandomMessage () {
                 return messages[_.random(0, messages.length - 1)];
+            },
+            getRandomEmoji () {
+                let key = emojis[_.random(0, emojis.length - 1)];
+                return emoji.get(key);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
@@ -116,9 +118,7 @@
                 };
 
                 marker = new google.maps.Marker(markerOptions);
-                marker.addListener('click', () => {
-                    console.log('click~~');
-                });
+                marker.addListener('click', this.getMoreInformation);
 
                 this.averageMarker = marker;
             },
@@ -126,6 +126,9 @@
                 if (typeof this.averageMarker.setMap !== 'undefined') {
                     this.averageMarker.setMap(null);
                 }
+            },
+            getMoreInformation () {
+                console.log('정보의 홍수~~');
             }
         },
         mounted () {

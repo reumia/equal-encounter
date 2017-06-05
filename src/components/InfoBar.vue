@@ -1,6 +1,6 @@
 <template>
     <div class="info-bar" :class="{active: isActive}">
-        {{ address }}
+        <a href="#" class="address">{{ address }}</a>
     </div>
 </template>
 
@@ -26,7 +26,7 @@
         },
         data () {
             return {
-                address: '',
+                address: '지도를 클릭해서 위치를 추가하세요.',
                 isActive: false
             }
         }
@@ -41,21 +41,28 @@
         top: 10px;
         left: 10px;
         right: 10px;
-        height: 30px;
-        line-height: 30px;
-        padding: 0 10px;
+        border-radius: 3px;
+        cursor: default;
         box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
-        background-color: rgba(255, 70, 65, 0.8);
-        border-radius: 2px;
-        transition: opacity 0.3s ease;
-        color: #fff;
-        font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        white-space: nowrap;
-        opacity: 0;
         &.active {
-            opacity: 1;
+            cursor: pointer;
+            .address {
+                color: #333;
+            }
+        }
+        .address {
+            display: block;
+            margin: 0;
+            padding: 0 10px;
+            height: 30px;
+            line-height: 30px;
+            background-color: #fff;
+            color: #ccc;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
         }
     }
 </style>
