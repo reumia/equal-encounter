@@ -1,6 +1,9 @@
 <template>
     <div class="app">
-        <div id="map-canvas"></div>
+        <info-bar :latLng="averageMarkerPosition"></info-bar>
+        <div class="map-wrap">
+            <div id="map-canvas"></div>
+        </div>
     </div>
 </template>
 
@@ -9,6 +12,7 @@
     import _ from 'lodash';
     import emoji from 'node-emoji';
     import infoBubble from 'js-info-bubble';
+    import InfoBar from './components/InfoBar.vue';
 
     const messages = [
         '저요!',
@@ -20,6 +24,7 @@
 
     export default {
         name: 'app',
+        components: { InfoBar },
         methods: {
             initCanvas () {
                 const canvas = document.getElementById('map-canvas');
@@ -36,7 +41,10 @@
                         zoom: 13,
                         center: this.mapCenter,
                         mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        disableDefaultUI: true
                     };
+
+                    this.google = google;
                     this.map = new google.maps.Map(this.canvas, options);
                     this.map.addListener('click', this.clickMap);
                 });
@@ -90,15 +98,10 @@
             getAverageLatLng () {
                 let lat, lng;
 
-                lat = _.meanBy(this.markersPositions, (object) => {
-                    return object.lat;
-                });
+                lat = _.meanBy(this.markersPositions, (object) => { return object.lat; });
+                lng = _.meanBy(this.markersPositions, (object) => { return object.lng; });
 
-                lng = _.meanBy(this.markersPositions, (object) => {
-                    return object.lng;
-                });
-
-                return {
+                this.averageMarkerPosition = {
                     lat: lat,
                     lng: lng
                 }
@@ -107,10 +110,8 @@
                 let markerOptions, marker;
 
                 markerOptions = {
-                    position: this.getAverageLatLng(),
-                    map: this.map,
-                    label: emoji.get(':heart:'),
-                    icon: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAH0lEQVR42mP8z/C/noGKgHHUwFEDRw0cNXDUwJFqIAAwuzHZ9CUUhAAAAABJRU5ErkJggg=='
+                    position: this.averageMarkerPosition,
+                    map: this.map
                 };
 
                 marker = new google.maps.Marker(markerOptions);
@@ -138,18 +139,21 @@
             markersPositions () {
                 if (this.markersPositions.length > 1) {
                     this.removeAverageMarker();
+                    this.getAverageLatLng();
                     this.addAverageMarker();
                 }
             }
         },
         data () {
             return {
+                google: {},
                 canvas: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
                 markers: [],
                 markersPositions: [],
-                averageMarker: {}
+                averageMarker: {},
+                averageMarkerPosition: {}
             }
         }
     }
@@ -163,13 +167,6 @@
     }
 
     .app {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
         font-family: sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -177,12 +174,13 @@
         text-align: center;
     }
 
-    .panel {
-        white-space: pre;
-        margin: 10px auto;
-        padding: 20px;
-        background-color: #f3f3f3;
-        text-align: left;
+    .map-wrap {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        transition: top 0.3s ease;
     }
 
     #map-canvas {
