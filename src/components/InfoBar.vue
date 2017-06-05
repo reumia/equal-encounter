@@ -41,21 +41,21 @@
         top: 10px;
         left: 10px;
         right: 10px;
-        height: 0;
-        line-height: 0;
+        height: 30px;
+        line-height: 30px;
         padding: 0 10px;
         box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
         background-color: rgba(255, 70, 65, 0.8);
         border-radius: 2px;
-        transition: height 0.3s ease;
+        transition: opacity 0.3s ease;
         color: #fff;
         font-size: 12px;
         font-weight: bold;
-        text-align: left;
+        text-align: center;
         white-space: nowrap;
+        opacity: 0;
         &.active {
-            height: 30px;
-            line-height: 30px;
+            opacity: 1;
         }
     }
 </style>
