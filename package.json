@@ -6,9 +6,11 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "deploy": "npm run build && cpr ./index.html ./public/index.html -o && firebase deploy"
   },
   "dependencies": {
+    "cpr": "^2.1.0",
     "google-maps": "^3.2.1",
     "js-info-bubble": "^0.8.0",
     "node-emoji": "^1.5.1",

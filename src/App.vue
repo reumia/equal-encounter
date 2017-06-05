@@ -13,6 +13,7 @@
     import emoji from 'node-emoji';
     import infoBubble from 'js-info-bubble';
     import InfoBar from './components/InfoBar.vue';
+    import transparentIcon from './assets/icon-transparent.png';
 
     const messages = [
         '저요!',
@@ -62,7 +63,7 @@
                     position: latLng,
                     map: this.map,
                     label: emoji.get(':raising_hand:'),
-                    icon: 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAH0lEQVR42mP8z/C/noGKgHHUwFEDRw0cNXDUwJFqIAAwuzHZ9CUUhAAAAABJRU5ErkJggg=='
+                    icon: transparentIcon
                 };
 
                 marker = new google.maps.Marker(markerOptions);
