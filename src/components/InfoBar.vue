@@ -1,5 +1,7 @@
 <template>
-    <a href="#" class="info-bar" :class="{active: isActive}">{{ address }}</a>
+    <a href="#" class="info-bar" :class="{active: isActive}">
+        {{ address }}
+    </a>
 </template>
 
 <script>
@@ -34,7 +36,6 @@
 <style lang="scss" scoped>
     .info-bar {
         display: block;
-        margin: 0;
         padding: 0 10px;
         height: 30px;
         line-height: 30px;
@@ -42,13 +43,15 @@
         color: #ccc;
         font-size: 12px;
         font-weight: bold;
-        text-align: center;
+        text-align: left;
         text-decoration: none;
         white-space: nowrap;
         cursor: default;
+        transition: background-color 0.2s, color 0.2s;
         &.active {
+            background-color: tomato;
             cursor: pointer;
-            color: #333;
+            color: #fff;
         }
     }
 </style>

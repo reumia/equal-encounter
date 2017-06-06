@@ -5,9 +5,7 @@
         </div>
         <div class="info-wrap">
             <info-bar :latLng="averageMarkerPosition"></info-bar>
-            <div class="info-list">
-                <info-list-item v-for="(place, index) in places" :place="place" :key="index"></info-list-item>
-            </div>
+            <info-list :places="places"></info-list>
         </div>
 
         <div class="map-wrap">
@@ -25,7 +23,7 @@
     import transparentIcon from './assets/icon-transparent.png';
 
     import InfoBar from './components/InfoBar.vue';
-    import InfoListItem from './components/InfoListItem.vue';
+    import InfoList from './components/InfoList.vue';
     import FunctionButton from './components/FunctionButton.vue';
 
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
@@ -33,7 +31,7 @@
 
     export default {
         name: 'app',
-        components: { InfoBar, InfoListItem, FunctionButton },
+        components: { InfoBar, InfoList, FunctionButton },
         data () {
             return {
                 google: {},
@@ -154,7 +152,7 @@
                 };
 
                 marker = new google.maps.Marker(markerOptions);
-                marker.addListener('click', this.getPlaces);
+//                marker.addListener('click', callback);
 
                 this.averageMarker = marker;
             },
@@ -184,6 +182,7 @@
                     this.removeAverageMarker();
                     this.getAverageLatLng();
                     this.addAverageMarker();
+                    this.getPlaces();
                 }
             }
         }
