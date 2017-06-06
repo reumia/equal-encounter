@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <div class="button-wrap">
-            <function-button @click="">지도 초기화</function-button>
+            <function-button v-for="(m, index) in markers" :marker="m" :key="index">지도 초기화</function-button>
         </div>
         <info-bar :latLng="averageMarkerPosition"></info-bar>
         <div class="map-wrap">
@@ -15,15 +15,17 @@
     import _ from 'lodash';
     import emoji from 'node-emoji';
     import infoBubble from 'js-info-bubble';
-    import InfoBar from './components/InfoBar.vue';
     import transparentIcon from './assets/icon-transparent.png';
 
+    import InfoBar from './components/InfoBar.vue';
+    import FunctionButton from './components/FunctionButton.vue';
+
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
-    const emojis = ['ok_woman', 'raising_hand', 'information_desk_person'];
+    const emojis = emoji.search('man');
 
     export default {
         name: 'app',
-        components: { InfoBar },
+        components: { InfoBar, FunctionButton },
         methods: {
             initCanvas () {
                 const canvas = document.getElementById('map-canvas');
@@ -65,6 +67,7 @@
                 };
 
                 marker = new google.maps.Marker(markerOptions);
+                marker.message = this.getRandomMessage();
 
                 this.addBubble(marker);
 
@@ -75,12 +78,12 @@
                 return messages[_.random(0, messages.length - 1)];
             },
             getRandomEmoji () {
-                let key = emojis[_.random(0, emojis.length - 1)];
+                let key = emojis[_.random(0, emojis.length - 1)].key;
                 return emoji.get(key);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
-                    content: '<div class="bubble">' + this.getRandomMessage() + '</div>',
+                    content: '<div class="bubble">' + marker.message + '</div>',
                     hideCloseButton: true,
                     disableAutoPan: true,
                     disableAnimation: true,
@@ -95,6 +98,8 @@
                     height: false,
                     minWidth: 0
                 });
+
+                marker.bubbleText = bubble.content.innerText;
 
                 bubble.open(this.map, marker);
             },
@@ -185,11 +190,17 @@
         top: 0;
         bottom: 0;
         transition: top 0.3s ease;
+        #map-canvas {
+            width: 100%;
+            height: 100%;
+        }
     }
-
-    #map-canvas {
-        width: 100%;
-        height: 100%;
+    .button-wrap {
+        position: fixed;
+        z-index: 10;
+        top: 50px;
+        left: 10px;
+        text-align: left;
     }
 
     .bubble {
