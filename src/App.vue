@@ -3,7 +3,13 @@
         <div class="button-wrap">
             <function-button v-for="(m, index) in markers" :marker="m" :key="index">지도 초기화</function-button>
         </div>
-        <info-bar :latLng="averageMarkerPosition"></info-bar>
+        <div class="info-wrap">
+            <info-bar :latLng="averageMarkerPosition"></info-bar>
+            <div class="info-list">
+                <info-list-item v-for="(place, index) in places" :place="place" :key="index"></info-list-item>
+            </div>
+        </div>
+
         <div class="map-wrap">
             <div id="map-canvas"></div>
         </div>
@@ -15,9 +21,11 @@
     import _ from 'lodash';
     import emoji from 'node-emoji';
     import infoBubble from 'js-info-bubble';
+
     import transparentIcon from './assets/icon-transparent.png';
 
     import InfoBar from './components/InfoBar.vue';
+    import InfoListItem from './components/InfoListItem.vue';
     import FunctionButton from './components/FunctionButton.vue';
 
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
@@ -25,7 +33,20 @@
 
     export default {
         name: 'app',
-        components: { InfoBar, FunctionButton },
+        components: { InfoBar, InfoListItem, FunctionButton },
+        data () {
+            return {
+                google: {},
+                canvas: {},
+                map: {},
+                mapCenter: {lat: 37.5662952, lng: 126.9757564},
+                markers: [],
+                markersPositions: [],
+                averageMarker: {},
+                averageMarkerPosition: {},
+                places: []
+            }
+        },
         methods: {
             initCanvas () {
                 const canvas = document.getElementById('map-canvas');
@@ -50,10 +71,38 @@
                     this.map.addListener('click', this.clickMap);
                 });
             },
-            clickMap (event) {
-                this.addMarker({
-                    lat: event.latLng.lat(),
-                    lng: event.latLng.lng()
+            getRandomMessage () {
+                return messages[_.random(0, messages.length - 1)];
+            },
+            getRandomEmoji () {
+                let key = emojis[_.random(0, emojis.length - 1)].key;
+                return emoji.get(key);
+            },
+            getAverageLatLng () {
+                let lat, lng;
+
+                lat = _.meanBy(this.markersPositions, (object) => { return object.lat; });
+                lng = _.meanBy(this.markersPositions, (object) => { return object.lng; });
+
+                this.averageMarkerPosition = {
+                    lat: lat,
+                    lng: lng
+                }
+            },
+            getPlaces () {
+                let request, service;
+
+                request = {
+                    location: this.averageMarker.position,
+                    radius: '500',
+                    types: ['cafe']
+                };
+
+                service = new google.maps.places.PlacesService(this.map);
+                service.nearbySearch(request, (result, status) => {
+                    if (status === 'OK') {
+                        this.places = result;
+                    }
                 });
             },
             addMarker (latLng) {
@@ -73,13 +122,6 @@
 
                 this.markers.push(marker);
                 this.markersPositions.push(markerOptions.position);
-            },
-            getRandomMessage () {
-                return messages[_.random(0, messages.length - 1)];
-            },
-            getRandomEmoji () {
-                let key = emojis[_.random(0, emojis.length - 1)].key;
-                return emoji.get(key);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
@@ -103,17 +145,6 @@
 
                 bubble.open(this.map, marker);
             },
-            getAverageLatLng () {
-                let lat, lng;
-
-                lat = _.meanBy(this.markersPositions, (object) => { return object.lat; });
-                lng = _.meanBy(this.markersPositions, (object) => { return object.lng; });
-
-                this.averageMarkerPosition = {
-                    lat: lat,
-                    lng: lng
-                }
-            },
             addAverageMarker () {
                 let markerOptions, marker;
 
@@ -123,7 +154,7 @@
                 };
 
                 marker = new google.maps.Marker(markerOptions);
-                marker.addListener('click', this.getMoreInformation);
+                marker.addListener('click', this.getPlaces);
 
                 this.averageMarker = marker;
             },
@@ -132,8 +163,11 @@
                     this.averageMarker.setMap(null);
                 }
             },
-            getMoreInformation () {
-                console.log('정보의 홍수~~');
+            clickMap (event) {
+                this.addMarker({
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng()
+                });
             }
         },
         mounted () {
@@ -152,18 +186,6 @@
                     this.addAverageMarker();
                 }
             }
-        },
-        data () {
-            return {
-                google: {},
-                canvas: {},
-                map: {},
-                mapCenter: {lat: 37.5662952, lng: 126.9757564},
-                markers: [],
-                markersPositions: [],
-                averageMarker: {},
-                averageMarkerPosition: {}
-            }
         }
     }
 </script>
@@ -174,7 +196,6 @@
         padding: 0;
         margin: 0;
     }
-
     .app {
         font-family: sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -182,7 +203,6 @@
         color: #333;
         text-align: center;
     }
-
     .map-wrap {
         position: fixed;
         left: 0;
@@ -198,11 +218,20 @@
     .button-wrap {
         position: fixed;
         z-index: 10;
-        top: 50px;
+        top: 10px;
         left: 10px;
         text-align: left;
     }
-
+    .info-wrap {
+        overflow: hidden;
+        position: fixed;
+        z-index: 10;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        border-radius: 3px;
+        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
+    }
     .bubble {
         color: #333;
         font-size: 12px;

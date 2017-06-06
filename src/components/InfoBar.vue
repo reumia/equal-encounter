@@ -1,7 +1,5 @@
 <template>
-    <div class="info-bar" :class="{active: isActive}">
-        <a href="#" class="address">{{ address }}</a>
-    </div>
+    <a href="#" class="info-bar" :class="{active: isActive}">{{ address }}</a>
 </template>
 
 <script>
@@ -35,34 +33,22 @@
 
 <style lang="scss" scoped>
     .info-bar {
-        overflow: hidden;
-        position: fixed;
-        z-index: 10;
-        top: 10px;
-        left: 10px;
-        right: 10px;
-        border-radius: 3px;
+        display: block;
+        margin: 0;
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        background-color: #fff;
+        color: #ccc;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
         cursor: default;
-        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
         &.active {
             cursor: pointer;
-            .address {
-                color: #333;
-            }
-        }
-        .address {
-            display: block;
-            margin: 0;
-            padding: 0 10px;
-            height: 30px;
-            line-height: 30px;
-            background-color: #fff;
-            color: #ccc;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            white-space: nowrap;
+            color: #333;
         }
     }
 </style>
