@@ -1,6 +1,8 @@
 <template>
     <div class="info-list" :style="{height: infoListHeight}">
-        <a href="" class="info-list-item" v-for="(place, index) in places" :place="place" :key="index" @click="clickItem($event, place)">
+        <a href="" class="info-list-item" v-for="(place, index) in places" :place="place" :key="index" @click="clickItem($event, place)"
+            :style="{height: heightUnit + 'px', lineHeight: heightUnit + 'px'}"
+        >
             <span class="icon" :style="{backgroundImage: 'url(' + place.icon + ')'}"></span>
             <span class="text">{{ place.name }}</span>
         </a>
@@ -17,13 +19,11 @@
                 alert(place.vicinity);
             },
             getInfoListHeight () {
-                let heightUnit;
-
-                if (this.$el.children.length > 0) heightUnit = this.$el.children[0].clientHeight;
-                else heightUnit = 0;
-
-                return this.places.length * heightUnit;
+                return this.places.length * this.heightUnit;
             }
+        },
+        mounted () {
+            this.heightUnit = 30;
         },
         watch: {
             places () {
@@ -34,7 +34,8 @@
         },
         data () {
             return {
-                infoListHeight: 0
+                infoListHeight: 0,
+                heightUnit: 0
             }
         }
     }
@@ -53,8 +54,6 @@
         display: block;
         padding: 0 10px 0 30px;
         border-bottom: 1px solid #f3f3f3;
-        height: 30px;
-        line-height: 29px;
         background-color: #fff;
         color: #333;
         font-size: 12px;
