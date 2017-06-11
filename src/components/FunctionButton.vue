@@ -9,10 +9,6 @@
     export default {
         name: 'function-button',
         props: ['marker'],
-        methods: {
-        },
-        watch: {
-        },
         data () {
             return {
             }

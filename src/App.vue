@@ -15,16 +15,15 @@
 </template>
 
 <script>
-    import GoogleMapsLoader from 'google-maps';
     import _ from 'lodash';
-    import emoji from 'node-emoji';
+    import GoogleMapsLoader from 'google-maps';
     import infoBubble from 'js-info-bubble';
-
-    import transparentIcon from './assets/icon-transparent.png';
+    import emoji from 'node-emoji';
 
     import InfoBar from './components/InfoBar.vue';
     import InfoList from './components/InfoList.vue';
     import FunctionButton from './components/FunctionButton.vue';
+    import transparentIcon from './assets/icon-transparent.png';
 
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
     const emojis = emoji.search('man');
