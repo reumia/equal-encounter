@@ -19,7 +19,7 @@
         <div class="map-wrap" :style="{bottom: infoListHeight + infoItemHeight + 'px'}">
             <div id="map-canvas"></div>
         </div>
-        <intro-dimmed-layer v-if="isIntroDimmedLayerVisible" v-on:disableLayer="disableLayer"></intro-dimmed-layer>
+        <intro-layer v-if="isIntroLayerVisible" v-on:saveDisable="disableIntroLayer"></intro-layer>
     </div>
 </template>
 
@@ -32,7 +32,7 @@
     import InfoBar from './components/InfoBar.vue';
     import InfoList from './components/InfoList.vue';
     import FunctionButton from './components/FunctionButton.vue';
-    import IntroDimmedLayer from './components/IntroDimmedLayer.vue';
+    import IntroLayer from './components/introLayer.vue';
     import transparentIcon from './assets/icon-transparent.png';
 
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
@@ -40,7 +40,7 @@
 
     export default {
         name: 'app',
-        components: { InfoBar, InfoList, FunctionButton, IntroDimmedLayer },
+        components: { InfoBar, InfoList, FunctionButton, IntroLayer },
         data () {
             return {
                 geocoder: {},
@@ -54,7 +54,7 @@
                 places: [],
                 infoItemHeight: 30,
                 infoListHeight: 0,
-                isIntroDimmedLayerVisible: true
+                isIntroLayerVisible: true
             }
         },
         mounted () {
@@ -192,7 +192,7 @@
                 };
 
                 marker = new google.maps.Marker(markerOptions);
-//                marker.addListener('click', callback);
+                // marker.addListener('click', callback);
 
                 this.averageMarker = marker;
             },
@@ -208,25 +208,21 @@
                 });
             },
             clearMap () {
-                // 위치 마커 지우기
-                _.each(this.markers, (marker, index) => {
+                _.each(this.markers, (marker) => {
                     marker.bubble.setMap(null);
                     marker.setMap(null);
                 });
                 this.markers = [];
                 this.markersPositions = [];
-                // 만남의 장소 마커 지우기
-                this.removeAverageMarker();
-                // 만남의 장소 위치 지우기
                 this.averageMarkerPosition = {};
-                // 장소 목록 초기화
                 this.places = [];
+                this.removeAverageMarker();
             },
             clearMarker () {
                 console.log('click');
             },
-            disableLayer () {
-                // this.isIntroDimmedLayerVisible = false;
+            disableIntroLayer () {
+                // this.isIntroLayerVisible = false;
                 console.log('캐시정보 저장');
             }
         }

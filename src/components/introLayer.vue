@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
-        <div class="dimmed" v-if="show">
-            <p class="dimmed-text">
+        <div class="intro-layer" v-if="show">
+            <p class="intro-layer-text">
                 망설이지마세요!<br>
                 만남의 장소를 대신 정해드립니다!<br>
                 <br>
@@ -9,7 +9,7 @@
             </p>
             <div class="button-wrap">
                 <button class="button" @click="show = !show">닫기</button>
-                <button class="button" @click="disableLayer">다시는 열지 않기</button>
+                <button class="button" @click="disable">다시는 열지 않기</button>
             </div>
         </div>
     </transition>
@@ -17,7 +17,7 @@
 
 <script>
     export default {
-        name: 'intro-dimmed-layer',
+        name: 'intro-layer',
         watch: {
         },
         data () {
@@ -26,16 +26,16 @@
             }
         },
         methods: {
-            disableLayer () {
+            disable () {
                 this.show = false;
-                this.$emit('disableLayer');
+                this.$emit('saveDisable');
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .dimmed {
+    .intro-layer {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -56,7 +56,7 @@
             opacity: 0
         }
     }
-    .dimmed-text {
+    .intro-layer-text {
         display: block;
         width: 240px;
         margin: 0 auto;
