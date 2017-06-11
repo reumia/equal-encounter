@@ -1,5 +1,5 @@
 <template>
-    <button class="function-button" @click="bindEvent">
+    <button class="function-button" @click="bindEvent" :class="{'with-button': hasButton}">
         <slot></slot>
     </button>
 </template>
@@ -7,7 +7,7 @@
 <script>
     export default {
         name: 'function-button',
-        props: ['onclick'],
+        props: ['onclick', 'button', 'hasButton'],
         methods: {
             bindEvent () {
                 if (typeof this.onclick !== 'undefined') this.onclick();
@@ -23,7 +23,7 @@
         display: block;
         border: 0;
         margin: 0;
-        padding: 0 36px 0 10px;
+        padding: 0 10px;
         background-color: #fff;
         width: 100%;
         height: 26px;
@@ -34,7 +34,12 @@
         .label,
         .message {
             display: inline-block;
-            margin-right: 4px;
+        }
+        span ~ span {
+            margin-left: 4px;
+        }
+        &.with-button {
+            padding-right: 32px;
         }
     }
     .function-button ~ .function-button {
@@ -51,7 +56,5 @@
         text-decoration: none;
         font-weight: bold;
         color: #333;
-        background-color: #f9f9f9;
-        border-left: 1px dotted #f3f3f3;
     }
 </style>

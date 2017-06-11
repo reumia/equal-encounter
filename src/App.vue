@@ -1,7 +1,7 @@
 <template>
     <div class="app">
         <div class="marker-button-wrap">
-            <function-button v-for="(m, index) in markers" :marker="m" :key="index">
+            <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
                 <span class="label">{{ m.label }}</span>
                 <span class="message">{{ m.message }}</span>
                 <a href="#" class="clear-button" @click="clearMarker">&times;</a>
