@@ -63,8 +63,8 @@
             canvas () {
                 this.initMap();
             },
-            markersPositions () {
-                if (this.markersPositions.length > 1) {
+            markers () {
+                if (this.markers.length > 1) {
                     this.removeAverageMarker();
                     this.getAverageLatLng();
                     this.addAverageMarker();
@@ -211,6 +211,7 @@
                     marker.setMap(null);
                 });
                 this.markers = [];
+                this.markersPositions = [];
                 // 만남의 장소 마커 지우기
                 this.removeAverageMarker();
                 // 만남의 장소 위치 지우기
