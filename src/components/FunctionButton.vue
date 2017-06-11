@@ -1,14 +1,13 @@
 <template>
-    <button class="function-button">
-        <span class="label">{{ marker.label }}</span>
-        <span class="message">{{ marker.message }}</span>
+    <button class="function-button" @click="onclick">
+        <slot></slot>
     </button>
 </template>
 
 <script>
     export default {
         name: 'function-button',
-        props: ['marker'],
+        props: ['onclick'],
         data () {
             return {
             }
@@ -24,10 +23,9 @@
         margin: 0;
         padding: 0 10px;
         background-color: #fff;
+        width: 100%;
         height: 26px;
         line-height: 26px;
-        border-radius: 3px;
-        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
         text-align: left;
         color: #333;
         font-weight: bold;
@@ -38,6 +36,6 @@
         }
     }
     .function-button ~ .function-button {
-        margin-top: 5px;
+        border-top: 1px solid #f3f3f3;
     }
 </style>

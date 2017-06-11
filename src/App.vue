@@ -1,7 +1,15 @@
 <template>
     <div class="app">
-        <div class="button-wrap">
-            <function-button v-for="(m, index) in markers" :marker="m" :key="index">지도 초기화</function-button>
+        <div class="marker-button-wrap">
+            <function-button v-for="(m, index) in markers" :marker="m" :key="index" :onclick="clearMap">
+                <span class="label">{{ m.label }}</span>
+                <span class="message">{{ m.message }}</span>
+            </function-button>
+        </div>
+        <div class="function-button-wrap">
+            <function-button :onclick="clearMap">
+                <span class="message">지도 새로고침</span>
+            </function-button>
         </div>
         <div class="info-wrap">
             <info-bar :latLng="averageMarkerPosition" :height="infoItemHeight"></info-bar>
@@ -167,6 +175,7 @@
                     minWidth: 0
                 });
 
+                marker.bubble = bubble;
                 marker.bubbleText = bubble.content.innerText;
 
                 bubble.open(this.map, marker);
@@ -194,6 +203,18 @@
                     lat: event.latLng.lat(),
                     lng: event.latLng.lng()
                 });
+            },
+            clearMap () {
+                // 위치 마커 지우기
+                _.each(this.markers, (marker, index) => {
+                    marker.bubble.setMap(null);
+                    marker.setMap(null);
+                });
+                this.markers = [];
+                // 만남의 장소 마커 지우기
+                this.removeAverageMarker();
+                // 장소 목록 초기화
+                this.places = [];
             }
         }
     }
@@ -224,12 +245,21 @@
             height: 100%;
         }
     }
-    .button-wrap {
+    .marker-button-wrap,
+    .function-button-wrap {
+        overflow: hidden;
         position: fixed;
         z-index: 10;
         top: 10px;
-        left: 10px;
         text-align: left;
+        border-radius: 3px;
+        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
+    }
+    .marker-button-wrap {
+        left: 10px;
+    }
+    .function-button-wrap {
+        right: 10px;
     }
     .info-wrap {
         overflow: hidden;
