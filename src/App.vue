@@ -12,7 +12,7 @@
             </function-button>
         </div>
         <div class="info-wrap">
-            <info-bar :latLng="averageMarkerPosition" :height="infoItemHeight"></info-bar>
+            <info-bar :geocoder="geocoder" :latLng="averageMarkerPosition" :height="infoItemHeight"></info-bar>
             <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
         </div>
 
@@ -41,7 +41,7 @@
         components: { InfoBar, InfoList, FunctionButton },
         data () {
             return {
-                google: {},
+                geocoder: {},
                 canvas: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
@@ -93,7 +93,7 @@
                         disableDefaultUI: true
                     };
 
-                    this.google = google;
+                    this.geocoder = new google.maps.Geocoder;
                     this.map = new google.maps.Map(this.canvas, options);
                     this.map.addListener('click', this.clickMap);
                 });
@@ -213,6 +213,8 @@
                 this.markers = [];
                 // 만남의 장소 마커 지우기
                 this.removeAverageMarker();
+                // 만남의 장소 위치 지우기
+                this.averageMarkerPosition = {};
                 // 장소 목록 초기화
                 this.places = [];
             }
