@@ -1,5 +1,5 @@
 <template>
-    <button class="function-button" @click="onclick">
+    <button class="function-button" @click="bindEvent">
         <slot></slot>
     </button>
 </template>
@@ -8,8 +8,9 @@
     export default {
         name: 'function-button',
         props: ['onclick'],
-        data () {
-            return {
+        methods: {
+            bindEvent () {
+                if (typeof this.onclick !== 'undefined') this.onclick();
             }
         }
     }

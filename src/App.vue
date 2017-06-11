@@ -1,9 +1,10 @@
 <template>
     <div class="app">
         <div class="marker-button-wrap">
-            <function-button v-for="(m, index) in markers" :marker="m" :key="index" :onclick="clearMap">
+            <function-button v-for="(m, index) in markers" :marker="m" :key="index">
                 <span class="label">{{ m.label }}</span>
                 <span class="message">{{ m.message }}</span>
+                <a href="#" class="clear-button" @click="clearMarker">&times;</a>
             </function-button>
         </div>
         <div class="function-button-wrap">
@@ -218,6 +219,9 @@
                 this.averageMarkerPosition = {};
                 // 장소 목록 초기화
                 this.places = [];
+            },
+            clearMarker () {
+                console.log('click');
             }
         }
     }
