@@ -1,7 +1,7 @@
 <template>
-    <div class="info-list" :style="{height: infoListHeight}">
+    <div class="info-list" :style="{height: listHeight + 'px'}">
         <a href="" class="info-list-item" v-for="(place, index) in places" :place="place" :key="index" @click="clickItem($event, place)"
-            :style="{height: heightUnit + 'px', lineHeight: heightUnit + 'px'}"
+            :style="{height: itemHeight + 'px', lineHeight: itemHeight + 'px'}"
         >
             <span class="icon" :style="{backgroundImage: 'url(' + place.icon + ')'}"></span>
             <span class="text">{{ place.name }}</span>
@@ -12,30 +12,11 @@
 <script>
     export default {
         name: 'info-list',
-        props: ['places'],
+        props: ['places', 'itemHeight', 'listHeight'],
         methods: {
             clickItem (event, place) {
                 event.preventDefault();
                 alert(place.vicinity);
-            },
-            getInfoListHeight () {
-                return this.places.length * this.heightUnit;
-            }
-        },
-        mounted () {
-            this.heightUnit = 30;
-        },
-        watch: {
-            places () {
-                let height = this.getInfoListHeight();
-
-                this.infoListHeight = height + 'px';
-            }
-        },
-        data () {
-            return {
-                infoListHeight: 0,
-                heightUnit: 0
             }
         }
     }
@@ -45,7 +26,6 @@
     .info-list {
         overflow-y: scroll;
         height: 0;
-        max-height: 180px;
         transition: height 0.2s;
     }
     .info-list-item {

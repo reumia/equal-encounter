@@ -1,5 +1,5 @@
 <template>
-    <a href="#" class="info-bar" :class="{active: isActive}">
+    <a href="#" class="info-bar" :class="{active: isActive}" :style="{height: height + 'px', lineHeight: height + 'px'}">
         {{ address }}
     </a>
 </template>
@@ -7,18 +7,7 @@
 <script>
     export default {
         name: 'info-bar',
-        props: ['latLng'],
-        methods: {
-            getAverageAddress () {
-                let geocoder = new google.maps.Geocoder;
-                geocoder.geocode({'location': this.latLng}, (results, status) => {
-                    if (status === "OK") {
-                        this.address = results[0].formatted_address;
-                        this.isActive = true;
-                    }
-                });
-            }
-        },
+        props: ['latLng', 'height'],
         watch: {
             latLng () {
                 this.getAverageAddress();
@@ -29,6 +18,17 @@
                 address: '지도를 클릭해서 위치를 추가하세요.',
                 isActive: false
             }
+        },
+        methods: {
+            getAverageAddress () {
+                let geocoder = new google.maps.Geocoder;
+                geocoder.geocode({'location': this.latLng}, (results, status) => {
+                    if (status === "OK") {
+                        this.address = results[0].formatted_address;
+                        this.isActive = true;
+                    }
+                });
+            }
         }
     }
 </script>
@@ -37,10 +37,8 @@
     .info-bar {
         display: block;
         padding: 0 10px;
-        height: 30px;
-        line-height: 30px;
-        background-color: #fff;
-        color: #ccc;
+        background-color: tomato;
+        color: #fff;
         font-size: 12px;
         font-weight: bold;
         text-align: left;
@@ -48,10 +46,5 @@
         white-space: nowrap;
         cursor: default;
         transition: background-color 0.2s, color 0.2s;
-        &.active {
-            background-color: tomato;
-            cursor: pointer;
-            color: #fff;
-        }
     }
 </style>

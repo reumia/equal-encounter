@@ -4,11 +4,11 @@
             <function-button v-for="(m, index) in markers" :marker="m" :key="index">지도 초기화</function-button>
         </div>
         <div class="info-wrap">
-            <info-bar :latLng="averageMarkerPosition"></info-bar>
-            <info-list :places="places"></info-list>
+            <info-bar :latLng="averageMarkerPosition" :height="infoItemHeight"></info-bar>
+            <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
         </div>
 
-        <div class="map-wrap">
+        <div class="map-wrap" :style="{bottom: infoListHeight + infoItemHeight + 'px'}">
             <div id="map-canvas"></div>
         </div>
     </div>
@@ -42,13 +42,35 @@
                 markersPositions: [],
                 averageMarker: {},
                 averageMarkerPosition: {},
-                places: []
+                places: [],
+                infoItemHeight: 30,
+                infoListHeight: 0
+            }
+        },
+        mounted () {
+            this.$nextTick(() => {
+                this.initCanvas();
+            });
+        },
+        watch: {
+            canvas () {
+                this.initMap();
+            },
+            markersPositions () {
+                if (this.markersPositions.length > 1) {
+                    this.removeAverageMarker();
+                    this.getAverageLatLng();
+                    this.addAverageMarker();
+                    this.getPlaces();
+                }
+            },
+            places () {
+                this.getInfoListHeight();
             }
         },
         methods: {
             initCanvas () {
-                const canvas = document.getElementById('map-canvas');
-                this.canvas = canvas;
+                this.canvas = document.getElementById('map-canvas');
             },
             initMap () {
                 GoogleMapsLoader.KEY = 'AIzaSyClD1Hi1lIAjnmmE_2k83Qwhy-RddcwH0g';
@@ -102,6 +124,13 @@
                         this.places = result;
                     }
                 });
+            },
+            getInfoListHeight () {
+                let tempHeight = this.places.length * this.infoItemHeight;
+
+                if (tempHeight > 180) tempHeight = 180;
+
+                this.infoListHeight = tempHeight;
             },
             addMarker (latLng) {
                 let markerOptions, marker;
@@ -167,24 +196,6 @@
                     lng: event.latLng.lng()
                 });
             }
-        },
-        mounted () {
-            this.$nextTick(() => {
-                this.initCanvas();
-            });
-        },
-        watch: {
-            canvas () {
-                this.initMap();
-            },
-            markersPositions () {
-                if (this.markersPositions.length > 1) {
-                    this.removeAverageMarker();
-                    this.getAverageLatLng();
-                    this.addAverageMarker();
-                    this.getPlaces();
-                }
-            }
         }
     }
 </script>
@@ -208,7 +219,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        transition: top 0.3s ease;
+        transition: bottom 0.2s;
         #map-canvas {
             width: 100%;
             height: 100%;
@@ -225,11 +236,9 @@
         overflow: hidden;
         position: fixed;
         z-index: 10;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        border-radius: 3px;
-        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
+        bottom: 0;
+        left: 0;
+        right: 0;
     }
     .bubble {
         color: #333;
