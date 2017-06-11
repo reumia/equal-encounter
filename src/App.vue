@@ -16,10 +16,10 @@
             <info-bar :geocoder="geocoder" :latLng="averageMarkerPosition" :height="infoItemHeight"></info-bar>
             <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
         </div>
-
         <div class="map-wrap" :style="{bottom: infoListHeight + infoItemHeight + 'px'}">
             <div id="map-canvas"></div>
         </div>
+        <intro-dimmed-layer v-if="isIntroDimmedLayerVisible" v-on:disableLayer="disableLayer"></intro-dimmed-layer>
     </div>
 </template>
 
@@ -32,6 +32,7 @@
     import InfoBar from './components/InfoBar.vue';
     import InfoList from './components/InfoList.vue';
     import FunctionButton from './components/FunctionButton.vue';
+    import IntroDimmedLayer from './components/IntroDimmedLayer.vue';
     import transparentIcon from './assets/icon-transparent.png';
 
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
@@ -39,7 +40,7 @@
 
     export default {
         name: 'app',
-        components: { InfoBar, InfoList, FunctionButton },
+        components: { InfoBar, InfoList, FunctionButton, IntroDimmedLayer },
         data () {
             return {
                 geocoder: {},
@@ -52,7 +53,8 @@
                 averageMarkerPosition: {},
                 places: [],
                 infoItemHeight: 30,
-                infoListHeight: 0
+                infoListHeight: 0,
+                isIntroDimmedLayerVisible: true
             }
         },
         mounted () {
@@ -222,6 +224,10 @@
             },
             clearMarker () {
                 console.log('click');
+            },
+            disableLayer () {
+                // this.isIntroDimmedLayerVisible = false;
+                console.log('캐시정보 저장');
             }
         }
     }
