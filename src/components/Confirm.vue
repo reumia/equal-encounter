@@ -4,21 +4,19 @@
             <div class="modal-wrapper">
                 <div class="modal-container">
                     <div class="modal-header">
-                        <slot name="header">
-                            default header
-                        </slot>
+                        <slot name="header"></slot>
                     </div>
-
                     <div class="modal-body">
                         <slot name="body">
                             default body
                         </slot>
                     </div>
-
                     <div class="modal-footer">
                         <slot name="footer">
-                            <button class="modal-default-button" @click="$emit('callback')">확인</button>
-                            <button class="modal-default-button" @click="$emit('close')">닫기</button>
+                            <div class="button-wrap">
+                                <button class="button button-accent" @click="$emit('callback')">확인</button>
+                                <button class="button" @click="$emit('close')">닫기</button>
+                            </div>
                         </slot>
                     </div>
                 </div>
@@ -55,23 +53,48 @@
         vertical-align: middle;
     }
     .modal-container {
+        overflow: hidden;
         width: 300px;
-        margin: 0px auto;
-        padding: 20px 30px;
+        margin: 0 auto;
+        padding: 0;
         background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px rgba(0,0,0,.33);
-        transition: all .3s ease;
+        border-radius: 3px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.2);
+        transition: all .2s;
+        font-size: 14px;
     }
-    .modal-header h3 {
-        margin-top: 0;
-        color: #42b983;
+    .modal-header {
+        margin: 0;
+        border-top: 10px solid tomato;
+        color: #fff;
+        font-weight: bold;
     }
     .modal-body {
-        margin: 20px 0;
+        margin: 0;
+        padding: 30px 10px 10px;
     }
-    .modal-default-button {
-        float: right;
+    .modal-footer {
+        padding: 10px 10px 30px;
+    }
+    .button-wrap {
+        display: flex;
+        justify-content: center;
+    }
+    .button {
+        -webkit-appearance: none;
+        display: block;
+        box-sizing: border-box;
+        margin: 0 5px;
+        padding: 5px 15px;
+        border-radius: 3px;
+        border: 1px solid #333;
+        background-color: transparent;
+        color: #333;
+        font-size: 14px;
+    }
+    .button-accent {
+        color: tomato;
+        border-color: tomato;
     }
     .modal-enter {
         opacity: 0;

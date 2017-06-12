@@ -21,8 +21,7 @@
         </div>
         <intro-layer v-if="showIntroLayer" @saveDisable="disableIntroLayer"></intro-layer>
         <confirm v-if="showConfirm" @close="showConfirm = false" @callback="clearMap">
-            <h3 slot="header">지도 새로고침</h3>
-            <p slot="body">입력된 위치를 모두 제거하시겠습니까?</p>
+            <div slot="body">입력된 위치를 모두 제거하시겠습니까?</div>
         </confirm>
     </div>
 </template>
