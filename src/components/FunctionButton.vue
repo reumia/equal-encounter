@@ -1,5 +1,5 @@
 <template>
-    <button class="function-button" @click="bindEvent" :class="{'with-button': hasButton}">
+    <button class="function-button" @click="$emit('showConfirm')" :class="{'with-button': hasButton}">
         <slot></slot>
     </button>
 </template>
@@ -7,12 +7,7 @@
 <script>
     export default {
         name: 'function-button',
-        props: ['onclick', 'button', 'hasButton'],
-        methods: {
-            bindEvent () {
-                if (typeof this.onclick !== 'undefined') this.onclick();
-            }
-        }
+        props: ['button', 'hasButton']
     }
 </script>
 

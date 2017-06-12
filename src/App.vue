@@ -8,7 +8,7 @@
             </function-button>
         </div>
         <div class="function-button-wrap">
-            <function-button :onclick="clearMap">
+            <function-button @showConfirm="showConfirm = true">
                 <span class="message">지도 새로고침</span>
             </function-button>
         </div>
@@ -19,7 +19,11 @@
         <div class="map-wrap" :style="{bottom: infoListHeight + infoItemHeight + 'px'}">
             <div id="map-canvas"></div>
         </div>
-        <intro-layer v-if="isIntroLayerVisible" v-on:saveDisable="disableIntroLayer"></intro-layer>
+        <intro-layer v-if="showIntroLayer" @saveDisable="disableIntroLayer"></intro-layer>
+        <confirm v-if="showConfirm" @close="showConfirm = false" @callback="clearMap">
+            <h3 slot="header">지도 새로고침</h3>
+            <p slot="body">입력된 위치를 모두 제거하시겠습니까?</p>
+        </confirm>
     </div>
 </template>
 
@@ -33,6 +37,7 @@
     import InfoList from './components/InfoList.vue';
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
+    import Confirm from './components/Confirm.vue';
     import transparentIcon from './assets/icon-transparent.png';
 
     const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
@@ -40,7 +45,7 @@
 
     export default {
         name: 'app',
-        components: { InfoBar, InfoList, FunctionButton, IntroLayer },
+        components: { InfoBar, InfoList, FunctionButton, IntroLayer, Confirm },
         data () {
             return {
                 geocoder: {},
@@ -54,7 +59,8 @@
                 places: [],
                 infoItemHeight: 30,
                 infoListHeight: 0,
-                isIntroLayerVisible: true
+                showIntroLayer: true,
+                showConfirm: false
             }
         },
         mounted () {
@@ -217,12 +223,13 @@
                 this.averageMarkerPosition = {};
                 this.places = [];
                 this.removeAverageMarker();
+                this.showConfirm = false;
             },
             clearMarker () {
                 console.log('click');
             },
             disableIntroLayer () {
-                // this.isIntroLayerVisible = false;
+                // this.showIntroLayer = false;
                 console.log('캐시정보 저장');
             }
         }
