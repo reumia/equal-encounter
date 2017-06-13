@@ -13,7 +13,6 @@
     "cpr": "^2.1.0",
     "google-maps": "^3.2.1",
     "js-info-bubble": "^0.8.0",
-    "node-emoji": "^1.5.1",
     "vue": "^2.3.3"
   },
   "devDependencies": {

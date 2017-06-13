@@ -30,7 +30,6 @@
     import _ from 'lodash';
     import GoogleMapsLoader from 'google-maps';
     import infoBubble from 'js-info-bubble';
-    import emoji from 'node-emoji';
 
     import InfoBar from './components/InfoBar.vue';
     import InfoList from './components/InfoList.vue';
@@ -40,7 +39,6 @@
     import { markerIcons, averageMarkerIcon } from './components/Icons';
 
     const messages = ['영미', '철수', '영희', '혜수', '태인', '지수', '준수', '탁훈', '가람'];
-    const emojis = emoji.search('man');
 
     export default {
         name: 'app',
@@ -48,11 +46,9 @@
         data () {
             return {
                 geocoder: {},
-                canvas: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
                 markers: [],
-                markersPositions: [],
                 averageMarker: {},
                 places: [],
                 infoItemHeight: 30,
@@ -63,13 +59,10 @@
         },
         mounted () {
             this.$nextTick(() => {
-                this.initCanvas();
+                this.initMap();
             });
         },
         watch: {
-            canvas () {
-                this.initMap();
-            },
             markers () {
                 if (this.markers.length > 1) {
                     this.removeAverageMarker();
@@ -83,10 +76,9 @@
             }
         },
         methods: {
-            initCanvas () {
-                this.canvas = document.getElementById('map-canvas');
-            },
             initMap () {
+                let canvas = document.getElementById('map-canvas');
+
                 GoogleMapsLoader.KEY = 'AIzaSyClD1Hi1lIAjnmmE_2k83Qwhy-RddcwH0g';
                 GoogleMapsLoader.LIBRARIES = ['geometry', 'places'];
                 GoogleMapsLoader.LANGUAGE = 'ko';
@@ -101,7 +93,7 @@
                     };
 
                     this.geocoder = new google.maps.Geocoder;
-                    this.map = new google.maps.Map(this.canvas, options);
+                    this.map = new google.maps.Map(canvas, options);
                     this.map.addListener('click', this.clickMap);
                 });
             },
@@ -111,8 +103,8 @@
             getAverageLatLng () {
                 let lat, lng;
 
-                lat = _.meanBy(this.markersPositions, (object) => { return object.lat; });
-                lng = _.meanBy(this.markersPositions, (object) => { return object.lng; });
+                lat = _.meanBy(this.markers, (object) => { return object.position.lat(); });
+                lng = _.meanBy(this.markers, (object) => { return object.position.lng(); });
 
                 return {
                     lat: lat,
@@ -166,7 +158,6 @@
                 this.addBubble(marker);
 
                 this.markers.push(marker);
-                this.markersPositions.push(markerOptions.position);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
@@ -231,7 +222,6 @@
                     marker.setMap(null);
                 });
                 this.markers = [];
-                this.markersPositions = [];
                 this.places = [];
                 this.removeAverageMarker();
                 this.showConfirm = false;
@@ -305,9 +295,9 @@
     }
     .icon-marker {
         width: 15px;
-        height: 100%;
+        height: 26px;
         background-size: 15px 15px;
         background-repeat: no-repeat;
-        background-position: center center;
+        background-position: center 5px;
     }
 </style>

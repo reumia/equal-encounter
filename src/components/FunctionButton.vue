@@ -38,16 +38,13 @@
             padding-right: 32px;
         }
     }
-    .function-button ~ .function-button {
-        border-top: 1px solid #f3f3f3;
-    }
     .clear-button {
         box-sizing: border-box;
         position: absolute;
         top: 0;
         right: 0;
         width: 26px;
-        height: 26px;
+        height: 100%;
         text-align: center;
         text-decoration: none;
         font-weight: bold;
