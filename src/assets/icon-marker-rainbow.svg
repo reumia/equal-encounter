@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-marker-rainbow</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="13" cy="13" r="13"></circle>
+        <circle id="path-3" cx="13" cy="13" r="13"></circle>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="26" height="26" fill="white">
+            <use xlink:href="#path-3"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-marker-rainbow">
+            <g id="Group-2" transform="translate(2.000000, 4.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Oval-4" fill="#AC69F3" xlink:href="#path-1"></use>
+                <rect id="Rectangle" fill="#FF2020" mask="url(#mask-2)" x="-2" y="-2" width="30" height="6"></rect>
+                <rect id="Rectangle" fill="#FF8B12" mask="url(#mask-2)" x="-2" y="3" width="30" height="5"></rect>
+                <rect id="Rectangle" fill="#FFDE12" mask="url(#mask-2)" x="-2" y="8" width="30" height="5"></rect>
+                <rect id="Rectangle" fill="#69F26C" mask="url(#mask-2)" x="-2" y="13" width="30" height="5"></rect>
+                <rect id="Rectangle" fill="#69CEF2" mask="url(#mask-2)" x="-2" y="18" width="30" height="5"></rect>
+                <g id="Oval-4" mask="url(#mask-2)" stroke-opacity="0.2" stroke="#000000" stroke-width="2">
+                    <use mask="url(#mask-4)" xlink:href="#path-3"></use>
+                </g>
+                <ellipse id="Oval" fill="#FFFFFF" mask="url(#mask-2)" cx="12.9" cy="12.9" rx="3" ry="3"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

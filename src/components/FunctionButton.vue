@@ -29,6 +29,7 @@
         .label,
         .message {
             display: inline-block;
+            vertical-align: top;
         }
         span ~ span {
             margin-left: 4px;
@@ -41,12 +42,12 @@
         border-top: 1px solid #f3f3f3;
     }
     .clear-button {
+        box-sizing: border-box;
         position: absolute;
         top: 0;
         right: 0;
         width: 26px;
         height: 26px;
-        line-height: 26px;
         text-align: center;
         text-decoration: none;
         font-weight: bold;

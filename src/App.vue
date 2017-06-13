@@ -2,7 +2,7 @@
     <div class="app">
         <div class="marker-button-wrap">
             <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
-                <span class="label">{{ m.label }}</span>
+                <span class="label icon-marker" :style="{ backgroundImage: 'url(' + m.icon.url + ')' }"></span>
                 <span class="message">{{ m.message }}</span>
                 <a href="#" class="clear-button" @click="clearMarker">&times;</a>
             </function-button>
@@ -37,11 +37,7 @@
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
     import Confirm from './components/Confirm.vue';
-
-    import iconMarker from './assets/icon-marker.svg';
-    import iconRainbow from './assets/icon-rainbow.svg';
-    import iconStar from './assets/icon-star.svg';
-    import iconTransparent from './assets/icon-transparent.png';
+    import { markerIcons, averageMarkerIcon } from './components/Icons';
 
     const messages = ['영미', '철수', '영희', '혜수', '태인', '지수', '준수', '탁훈', '가람'];
     const emojis = emoji.search('man');
@@ -109,12 +105,8 @@
                     this.map.addListener('click', this.clickMap);
                 });
             },
-            getRandomMessage () {
-                return messages[_.random(0, messages.length - 1)];
-            },
-            getRandomEmoji () {
-                let key = emojis[_.random(0, emojis.length - 1)].key;
-                return emoji.get(key);
+            getRandom (array) {
+                return array[_.random(0, array.length - 1)];
             },
             getAverageLatLng () {
                 let lat, lng;
@@ -151,24 +143,25 @@
                 this.infoListHeight = tempHeight;
             },
             addMarker (latLng) {
-                let markerOptions, marker, markerImage;
+                let markerOptions, marker, markerIcon;
 
-                markerImage = {
-                    url: iconMarker,
-                    size: new google.maps.Size(16, 16),
-                    anchor: new google.maps.Point(8, 12),
-                    origin: new google.maps.Point(0, -4)
+                markerIcon = this.getRandom(markerIcons);
+                markerIcon = {
+                    url: markerIcon.url,
+                    size: new google.maps.Size(markerIcon.size.x, markerIcon.size.y),
+                    anchor: new google.maps.Point((markerIcon.size.x / 2), markerIcon.size.y),
+                    origin: new google.maps.Point(0, 0)
                 };
 
                 markerOptions = {
                     position: latLng,
                     map: this.map,
-                    label: this.getRandomEmoji(),
-                    icon: iconTransparent
+                    icon: markerIcon,
+                    zIndex: 1
                 };
 
                 marker = new google.maps.Marker(markerOptions);
-                marker.message = this.getRandomMessage();
+                marker.message = this.getRandom(messages);
 
                 this.addBubble(marker);
 
@@ -200,19 +193,20 @@
                 bubble.open(this.map, marker);
             },
             addAverageMarker () {
-                let markerOptions, marker, markerImage;
+                let markerOptions, marker, markerIcon;
 
-                markerImage = {
-                    url: iconRainbow,
-                    size: new google.maps.Size(20, 24),
-                    anchor: new google.maps.Point(10, 20),
-                    origin: new google.maps.Point(0, -4)
+                markerIcon = {
+                    url: averageMarkerIcon.url,
+                    size: new google.maps.Size(averageMarkerIcon.size.x, averageMarkerIcon.size.y),
+                    anchor: new google.maps.Point((averageMarkerIcon.size.x / 2), averageMarkerIcon.size.y),
+                    origin: new google.maps.Point(0, 0)
                 };
 
                 markerOptions = {
                     position: this.getAverageLatLng(),
                     map: this.map,
-                    icon: markerImage
+                    icon: markerIcon,
+                    zIndex: 1000
                 };
 
                 marker = new google.maps.Marker(markerOptions);
@@ -308,5 +302,12 @@
         font-size: 11px;
         font-weight: bold;
         white-space: nowrap;
+    }
+    .icon-marker {
+        width: 15px;
+        height: 100%;
+        background-size: 15px 15px;
+        background-repeat: no-repeat;
+        background-position: center center;
     }
 </style>
