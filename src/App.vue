@@ -2,6 +2,7 @@
     <div class="app">
         <div class="marker-button-wrap">
             <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
+                <span class="label">{{ m.label }}</span>
                 <span class="message">{{ m.message }}</span>
                 <a href="#" class="clear-button" @click="clearMarker">&times;</a>
             </function-button>
@@ -38,11 +39,10 @@
     import Confirm from './components/Confirm.vue';
     import iconMarker from './assets/icon-marker.svg';
     import iconStar from './assets/icon-star.svg';
+    import iconTransparent from './assets/icon-transparent.png';
 
-    const messages = ['저요!', '나야나!', '여기야~', '호잇', '뿅'];
+    const messages = ['영미', '철수', '영희', '혜수', '태인', '지수', '준수', '탁훈', '가람'];
     const emojis = emoji.search('man');
-
-    let markerImage, averageMarkerImage;
 
     export default {
         name: 'app',
@@ -56,7 +56,6 @@
                 markers: [],
                 markersPositions: [],
                 averageMarker: {},
-                averageMarkerPosition: {},
                 places: [],
                 infoItemHeight: 30,
                 infoListHeight: 0,
@@ -106,20 +105,6 @@
                     this.geocoder = new google.maps.Geocoder;
                     this.map = new google.maps.Map(this.canvas, options);
                     this.map.addListener('click', this.clickMap);
-
-                    markerImage = {
-                        url: iconMarker,
-                        size: new google.maps.Size(16, 16),
-                        anchor: new google.maps.Point(8, 12),
-                        origin: new google.maps.Point(0, -4)
-                    };
-
-                    averageMarkerImage = {
-                        url: iconStar,
-                        size: new google.maps.Size(20, 24),
-                        anchor: new google.maps.Point(10, 20),
-                        origin: new google.maps.Point(0, -4)
-                    };
                 });
             },
             getRandomMessage () {
@@ -135,7 +120,7 @@
                 lat = _.meanBy(this.markersPositions, (object) => { return object.lat; });
                 lng = _.meanBy(this.markersPositions, (object) => { return object.lng; });
 
-                this.averageMarkerPosition = {
+                return {
                     lat: lat,
                     lng: lng
                 }
@@ -164,12 +149,20 @@
                 this.infoListHeight = tempHeight;
             },
             addMarker (latLng) {
-                let markerOptions, marker;
+                let markerOptions, marker, markerImage;
+
+                markerImage = {
+                    url: iconMarker,
+                    size: new google.maps.Size(16, 16),
+                    anchor: new google.maps.Point(8, 12),
+                    origin: new google.maps.Point(0, -4)
+                };
 
                 markerOptions = {
                     position: latLng,
                     map: this.map,
-                    icon: markerImage
+                    label: this.getRandomEmoji(),
+                    icon: iconTransparent
                 };
 
                 marker = new google.maps.Marker(markerOptions);
@@ -188,12 +181,13 @@
                     disableAnimation: true,
                     shadowStyle: 0,
                     padding: 5,
-                    borderRadius: 5,
-                    borderWidth: 0,
-                    arrowStyle: 0,
+                    borderRadius: 0,
+                    borderWidth: 1,
+                    borderColor: '#ccc',
+                    arrowStyle: 1,
                     arrowSize: 5,
-                    arrowPosition: 50,
-                    backgroundColor: 'rgba(255,255,255,.9)',
+                    arrowPosition: 70,
+                    backgroundColor: '#fff',
                     height: false,
                     minWidth: 0
                 });
@@ -204,12 +198,19 @@
                 bubble.open(this.map, marker);
             },
             addAverageMarker () {
-                let markerOptions, marker;
+                let markerOptions, marker, markerImage;
+
+                markerImage = {
+                    url: iconStar,
+                    size: new google.maps.Size(20, 24),
+                    anchor: new google.maps.Point(10, 20),
+                    origin: new google.maps.Point(0, -4)
+                };
 
                 markerOptions = {
-                    position: this.averageMarkerPosition,
+                    position: this.getAverageLatLng(),
                     map: this.map,
-                    icon: averageMarkerImage
+                    icon: markerImage
                 };
 
                 marker = new google.maps.Marker(markerOptions);
@@ -235,7 +236,6 @@
                 });
                 this.markers = [];
                 this.markersPositions = [];
-                this.averageMarkerPosition = {};
                 this.places = [];
                 this.removeAverageMarker();
                 this.showConfirm = false;
