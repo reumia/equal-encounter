@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>Artboard 3</title>
+    <title>icon-star</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="180.74273%" id="linearGradient-1">
+            <stop stop-color="#FDFF00" offset="0%"></stop>
+            <stop stop-color="#FF9494" offset="100%"></stop>
+        </linearGradient>
+    </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Artboard-3">
+        <g id="icon-star">
             <g id="Group" transform="translate(1.000000, 1.000000)">
                 <ellipse id="Oval" fill-opacity="0.15" fill="#000000" cx="9" cy="16.8" rx="7" ry="1.8"></ellipse>
-                <polygon id="Star" stroke="#D59940" stroke-linecap="round" stroke-linejoin="round" fill="#FFF835" points="9 13.5 3.70993273 16.2811529 4.72024568 10.3905765 0.440491353 6.21884705 6.35496636 5.35942353 9 0 11.6450336 5.35942353 17.5595086 6.21884705 13.2797543 10.3905765 14.2900673 16.2811529"></polygon>
+                <polygon id="Star" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" fill="url(#linearGradient-1)" points="9 13.5 3.70993273 16.2811529 4.72024568 10.3905765 0.440491353 6.21884705 6.35496636 5.35942353 9 0 11.6450336 5.35942353 17.5595086 6.21884705 13.2797543 10.3905765 14.2900673 16.2811529"></polygon>
             </g>
         </g>
     </g>

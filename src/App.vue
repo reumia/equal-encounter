@@ -37,7 +37,9 @@
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
     import Confirm from './components/Confirm.vue';
+
     import iconMarker from './assets/icon-marker.svg';
+    import iconRainbow from './assets/icon-rainbow.svg';
     import iconStar from './assets/icon-star.svg';
     import iconTransparent from './assets/icon-transparent.png';
 
@@ -201,7 +203,7 @@
                 let markerOptions, marker, markerImage;
 
                 markerImage = {
-                    url: iconStar,
+                    url: iconRainbow,
                     size: new google.maps.Size(20, 24),
                     anchor: new google.maps.Point(10, 20),
                     origin: new google.maps.Point(0, -4)
