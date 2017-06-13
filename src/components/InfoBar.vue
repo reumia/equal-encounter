@@ -7,9 +7,9 @@
 <script>
     export default {
         name: 'info-bar',
-        props: ['latLng', 'height', 'geocoder'],
+        props: ['marker', 'height', 'geocoder'],
         watch: {
-            latLng () {
+            marker () {
                 this.getAverageAddress();
             }
         },
@@ -24,10 +24,12 @@
         },
         methods: {
             getAverageAddress () {
-                if (typeof this.latLng.lat === 'undefined') {
+                let latLng = this.marker.position;
+
+                if (typeof latLng === 'undefined') {
                     this.address = '지도를 클릭해서 위치를 추가하세요.';
                 } else {
-                    this.geocoder.geocode({'location': this.latLng}, (results, status) => {
+                    this.geocoder.geocode({'location': latLng}, (results, status) => {
                         if (status === "OK") {
                             this.address = results[0].formatted_address;
                             this.isActive = true;
