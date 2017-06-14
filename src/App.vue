@@ -4,7 +4,7 @@
         <!-- 헤더 -->
         <header class="app-header">
             <nav class="app-nav">
-                <nav-button @onClick="showAside = true" align="left">사람 {{ markers.length }}</nav-button>
+                <nav-button @onClick="showAside = showAside !== true" align="left">사람 {{ markers.length }}</nav-button>
                 <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
                 <nav-button @onClick="showConfirm = true" align="right">새로고침</nav-button>
             </nav>
@@ -90,7 +90,6 @@
                 this.getInfoListHeight();
             }
         },
-
         methods: {
             initMap () {
                 let canvas = document.getElementById('map-canvas');
@@ -150,7 +149,7 @@
                 this.infoListHeight = tempHeight;
             },
             addMarker (latLng) {
-                let markerOptions, marker, markerIcon;
+                let marker, markerIcon;
 
                 markerIcon = this.getRandom(markerIcons);
                 markerIcon = {
@@ -160,18 +159,16 @@
                     origin: new google.maps.Point(0, 0)
                 };
 
-                markerOptions = {
+                marker = new google.maps.Marker({
                     position: latLng,
                     map: this.map,
                     icon: markerIcon,
                     zIndex: 1
-                };
+                });
 
-                marker = new google.maps.Marker(markerOptions);
                 marker.message = this.getRandom(messages);
 
                 this.addBubble(marker);
-
                 this.markers.push(marker);
             },
             addBubble (marker) {
@@ -199,7 +196,7 @@
                 bubble.open(this.map, marker);
             },
             addAverageMarker () {
-                let markerOptions, marker, markerIcon;
+                let marker, markerIcon;
 
                 markerIcon = {
                     url: averageMarkerIcon.url,
@@ -208,14 +205,13 @@
                     origin: new google.maps.Point(0, 0)
                 };
 
-                markerOptions = {
+                marker = new google.maps.Marker({
                     position: this.getAverageLatLng(),
                     map: this.map,
                     icon: markerIcon,
                     zIndex: 1000
-                };
+                });
 
-                marker = new google.maps.Marker(markerOptions);
                 // marker.addListener('click', callback);
 
                 this.averageMarker = marker;
@@ -275,12 +271,7 @@
         right: 0;
         background-color: #fff;
         box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
-    }
-    .app-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 32px;
+        transition: transform 0.2s;
     }
     .app-body {
         position: fixed;
@@ -301,6 +292,7 @@
         bottom: 0;
         left: 0;
         right: 0;
+        transition: transform 0.2s;
     }
     .app-aside {
         position: fixed;
@@ -320,6 +312,12 @@
         .app-aside {
             transform: translateX(0);
         }
+    }
+    .app-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 32px;
     }
     .marker-button-wrap {
         overflow: hidden;
