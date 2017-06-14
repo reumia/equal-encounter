@@ -33,7 +33,7 @@
         position: relative;
         display: block;
         padding: 0 10px 0 30px;
-        border-bottom: 1px solid #f3f3f3;
+        border-top: 1px solid #f3f3f3;
         background-color: #fff;
         color: #333;
         font-size: 12px;

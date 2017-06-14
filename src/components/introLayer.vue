@@ -49,7 +49,7 @@
         color: #fff;
         &.fade-enter-active,
         &.fade-leave-active {
-            transition: opacity 1s
+            transition: opacity 1s ease;
         }
         &.fade-enter,
         &.fade-leave-to {

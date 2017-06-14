@@ -1,5 +1,29 @@
 <template>
     <div class="app">
+
+        <!-- 헤더 -->
+        <header class="app-header">
+            <nav class="app-nav" :style="{height: infoItemHeight + 'px'}">
+                <nav-button @clickButton="" align="left">메뉴</nav-button>
+                <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
+                <nav-button @clickButton="showConfirm = true" align="right">청소</nav-button>
+            </nav>
+            <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
+        </header>
+        <!-- 헤더 -->
+
+        <!-- 본문 -->
+        <section class="app-body" :style="{top: infoListHeight + infoItemHeight + 'px'}">
+            <div id="map-canvas"></div>
+        </section>
+        <!-- 본문 -->
+
+        <!-- 상세 -->
+        <aside class="app-aside">
+            
+        </aside>
+        <!-- 상세 -->
+
         <div class="marker-button-wrap">
             <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
                 <span class="label icon-marker" :style="{ backgroundImage: 'url(' + m.icon.url + ')' }"></span>
@@ -7,22 +31,16 @@
                 <a href="#" class="clear-button" @click="clearMarker">&times;</a>
             </function-button>
         </div>
-        <div class="function-button-wrap">
-            <function-button @showConfirm="showConfirm = true">
-                <span class="message">지도 새로고침</span>
-            </function-button>
-        </div>
-        <div class="info-wrap">
-            <info-bar :geocoder="geocoder" :marker="averageMarker" :height="infoItemHeight"></info-bar>
-            <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
-        </div>
-        <div class="map-wrap" :style="{bottom: infoListHeight + infoItemHeight + 'px'}">
-            <div id="map-canvas"></div>
-        </div>
+
+        <!-- 소개 팝업 -->
         <intro-layer v-if="showIntroLayer" @saveDisable="disableIntroLayer"></intro-layer>
+        <!-- 소개 팝업 -->
+
+        <!-- 확인 팝업 -->
         <confirm v-if="showConfirm" @close="showConfirm = false" @callback="clearMap">
             <div slot="body">입력된 위치를 모두 제거하시겠습니까?</div>
         </confirm>
+        <!-- 확인 팝업 -->
     </div>
 </template>
 
@@ -31,7 +49,8 @@
     import GoogleMapsLoader from 'google-maps';
     import infoBubble from 'js-info-bubble';
 
-    import InfoBar from './components/InfoBar.vue';
+    import NavAddress from './components/NavAddress.vue';
+    import NavButton from './components/NavButton.vue';
     import InfoList from './components/InfoList.vue';
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
@@ -42,7 +61,7 @@
 
     export default {
         name: 'app',
-        components: { InfoBar, InfoList, FunctionButton, IntroLayer, Confirm },
+        components: { NavAddress, NavButton, InfoList, FunctionButton, IntroLayer, Confirm },
         data () {
             return {
                 geocoder: {},
@@ -208,6 +227,7 @@
             removeAverageMarker () {
                 if (typeof this.averageMarker.setMap !== 'undefined') {
                     this.averageMarker.setMap(null);
+                    this.averageMarker = {};
                 }
             },
             clickMap (event) {
@@ -250,42 +270,42 @@
         color: #333;
         text-align: center;
     }
-    .map-wrap {
+    .app-header {
+        overflow: hidden;
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+    .app-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .app-body {
         position: fixed;
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
-        transition: bottom 0.2s;
+        transition: top 0.2s;
         #map-canvas {
             width: 100%;
             height: 100%;
         }
     }
-    .marker-button-wrap,
-    .function-button-wrap {
+    .marker-button-wrap {
         overflow: hidden;
         position: fixed;
         z-index: 10;
-        top: 10px;
+        bottom: 10px;
+        left: 10px;
         text-align: left;
         border-radius: 3px;
         box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
     }
-    .marker-button-wrap {
-        left: 10px;
-    }
-    .function-button-wrap {
-        right: 10px;
-    }
-    .info-wrap {
-        overflow: hidden;
-        position: fixed;
-        z-index: 10;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+    
     .bubble {
         overflow: hidden;
         color: #333;
