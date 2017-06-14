@@ -14,8 +14,8 @@
                     <div class="modal-footer">
                         <slot name="footer">
                             <div class="button-wrap">
-                                <button class="button button-accent" @click="$emit('callback')">확인</button>
-                                <button class="button" @click="$emit('close')">닫기</button>
+                                <button class="button button-accent" @click="$emit('onConfirm')">확인</button>
+                                <button class="button" @click="$emit('onClose')">닫기</button>
                             </div>
                         </slot>
                     </div>

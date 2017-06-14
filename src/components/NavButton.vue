@@ -1,5 +1,5 @@
 <template>
-    <button class="nav-button" :style="{textAlign: align}" @click="$emit('clickButton')">
+    <button class="nav-button" :style="{textAlign: align}" @click="$emit('onClick')">
         <slot></slot>
     </button>
 </template>

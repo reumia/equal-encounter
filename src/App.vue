@@ -4,9 +4,9 @@
         <!-- 헤더 -->
         <header class="app-header">
             <nav class="app-nav" :style="{height: infoItemHeight + 'px'}">
-                <nav-button @clickButton="" align="left">메뉴</nav-button>
+                <nav-button @onClick="" align="left">메뉴</nav-button>
                 <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
-                <nav-button @clickButton="showConfirm = true" align="right">청소</nav-button>
+                <nav-button @onClick="showConfirm = true" align="right">새로고침</nav-button>
             </nav>
             <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
         </header>
@@ -37,7 +37,7 @@
         <!-- 소개 팝업 -->
 
         <!-- 확인 팝업 -->
-        <confirm v-if="showConfirm" @close="showConfirm = false" @callback="clearMap">
+        <confirm v-if="showConfirm" @onClose="showConfirm = false" @onConfirm="clearMap">
             <div slot="body">입력된 위치를 모두 제거하시겠습니까?</div>
         </confirm>
         <!-- 확인 팝업 -->
