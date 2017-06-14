@@ -1,10 +1,10 @@
 <template>
-    <div class="app">
+    <div class="app" :class="{'with-aside': showAside}">
 
         <!-- 헤더 -->
         <header class="app-header">
             <nav class="app-nav">
-                <nav-button @onClick="" align="left">사람 {{ markers.length }}</nav-button>
+                <nav-button @onClick="showAside = true" align="left">사람 {{ markers.length }}</nav-button>
                 <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
                 <nav-button @onClick="showConfirm = true" align="right">새로고침</nav-button>
             </nav>
@@ -17,7 +17,11 @@
 
         <!-- 상세 -->
         <aside class="app-aside">
-            
+            <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
+                <span class="label icon-marker" :style="{ backgroundImage: 'url(' + m.icon.url + ')' }"></span>
+                <span class="message">{{ m.message }}</span>
+                <a href="#" class="clear-button" @click="clearMarker">&times;</a>
+            </function-button>
         </aside>
 
         <!-- 푸터 -->
@@ -32,14 +36,6 @@
         <confirm v-if="showConfirm" @onClose="showConfirm = false" @onConfirm="clearMap">
             <div slot="body">입력된 위치를 모두 제거하시겠습니까?</div>
         </confirm>
-
-        <div class="marker-button-wrap">
-            <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
-                <span class="label icon-marker" :style="{ backgroundImage: 'url(' + m.icon.url + ')' }"></span>
-                <span class="message">{{ m.message }}</span>
-                <a href="#" class="clear-button" @click="clearMarker">&times;</a>
-            </function-button>
-        </div>
     </div>
 </template>
 
@@ -72,7 +68,8 @@
                 infoItemHeight: 30,
                 infoListHeight: 0,
                 showIntroLayer: true,
-                showConfirm: false
+                showConfirm: false,
+                showAside: false
             }
         },
         mounted () {
@@ -93,6 +90,7 @@
                 this.getInfoListHeight();
             }
         },
+
         methods: {
             initMap () {
                 let canvas = document.getElementById('map-canvas');
@@ -275,6 +273,7 @@
         top: 0;
         left: 0;
         right: 0;
+        background-color: #fff;
         box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
     }
     .app-nav {
@@ -289,7 +288,7 @@
         right: 0;
         top: 32px;
         bottom: 0;
-        transition: bottom 0.2s;
+        transition: bottom 0.2s, transform 0.2s;
         #map-canvas {
             width: 100%;
             height: 100%;
@@ -302,6 +301,25 @@
         bottom: 0;
         left: 0;
         right: 0;
+    }
+    .app-aside {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 200px;
+        transform: translateX(-200px);
+        transition: transform 0.2s;
+    }
+    .with-aside {
+        .app-header,
+        .app-footer,
+        .app-body {
+            transform: translateX(200px);
+        }
+        .app-aside {
+            transform: translateX(0);
+        }
     }
     .marker-button-wrap {
         overflow: hidden;
