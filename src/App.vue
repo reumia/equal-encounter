@@ -3,26 +3,35 @@
 
         <!-- 헤더 -->
         <header class="app-header">
-            <nav class="app-nav" :style="{height: infoItemHeight + 'px'}">
-                <nav-button @onClick="" align="left">메뉴</nav-button>
+            <nav class="app-nav">
+                <nav-button @onClick="" align="left">사람 {{ markers.length }}</nav-button>
                 <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
                 <nav-button @onClick="showConfirm = true" align="right">새로고침</nav-button>
             </nav>
-            <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
         </header>
-        <!-- 헤더 -->
 
         <!-- 본문 -->
-        <section class="app-body" :style="{top: infoListHeight + infoItemHeight + 'px'}">
+        <section class="app-body" :style="{bottom: infoListHeight + 'px'}">
             <div id="map-canvas"></div>
         </section>
-        <!-- 본문 -->
 
         <!-- 상세 -->
         <aside class="app-aside">
             
         </aside>
-        <!-- 상세 -->
+
+        <!-- 푸터 -->
+        <footer class="app-footer">
+            <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
+        </footer>
+
+        <!-- 소개 팝업 -->
+        <intro-layer v-if="showIntroLayer" @saveDisable="disableIntroLayer"></intro-layer>
+
+        <!-- 확인 팝업 -->
+        <confirm v-if="showConfirm" @onClose="showConfirm = false" @onConfirm="clearMap">
+            <div slot="body">입력된 위치를 모두 제거하시겠습니까?</div>
+        </confirm>
 
         <div class="marker-button-wrap">
             <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
@@ -31,16 +40,6 @@
                 <a href="#" class="clear-button" @click="clearMarker">&times;</a>
             </function-button>
         </div>
-
-        <!-- 소개 팝업 -->
-        <intro-layer v-if="showIntroLayer" @saveDisable="disableIntroLayer"></intro-layer>
-        <!-- 소개 팝업 -->
-
-        <!-- 확인 팝업 -->
-        <confirm v-if="showConfirm" @onClose="showConfirm = false" @onConfirm="clearMap">
-            <div slot="body">입력된 위치를 모두 제거하시겠습니까?</div>
-        </confirm>
-        <!-- 확인 팝업 -->
     </div>
 </template>
 
@@ -141,9 +140,8 @@
 
                 service = new google.maps.places.PlacesService(this.map);
                 service.nearbySearch(request, (result, status) => {
-                    if (status === 'OK') {
-                        this.places = result;
-                    }
+                    if (status === 'OK') this.places = result;
+                    else if (status === 'ZERO_RESULTS') this.places = [];
                 });
             },
             getInfoListHeight () {
@@ -277,29 +275,39 @@
         top: 0;
         left: 0;
         right: 0;
+        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
     }
     .app-nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        height: 32px;
     }
     .app-body {
         position: fixed;
         left: 0;
         right: 0;
-        top: 0;
+        top: 32px;
         bottom: 0;
-        transition: top 0.2s;
+        transition: bottom 0.2s;
         #map-canvas {
             width: 100%;
             height: 100%;
         }
     }
+    .app-footer {
+        overflow: hidden;
+        position: fixed;
+        z-index: 10;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
     .marker-button-wrap {
         overflow: hidden;
         position: fixed;
         z-index: 10;
-        bottom: 10px;
+        top: 42px;
         left: 10px;
         text-align: left;
         border-radius: 3px;
