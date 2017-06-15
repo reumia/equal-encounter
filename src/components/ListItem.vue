@@ -1,12 +1,12 @@
 <template>
-    <button class="function-button" @click="$emit('onClick')" :class="{'with-button': hasButton}">
+    <button class="function-button" @click="$emit('showConfirm')" :class="{'with-button': hasButton}">
         <slot></slot>
     </button>
 </template>
 
 <script>
     export default {
-        name: 'function-button',
+        name: 'list-item',
         props: ['button', 'hasButton']
     }
 </script>
@@ -14,14 +14,18 @@
 <style lang="scss" scoped>
     .function-button {
         -webkit-appearance: none;
+        position: relative;
         display: block;
         border: 0;
         margin: 0;
-        background-color: #333;
+        padding: 0 10px;
+        background-color: #fff;
         width: 100%;
-        height: 60px;
-        line-height: 60px;
-        color: #fff;
+        height: 26px;
+        line-height: 26px;
+        text-align: left;
+        color: #333;
+        font-weight: bold;
         .label,
         .message {
             display: inline-block;

@@ -4,29 +4,43 @@
         <!-- 헤더 -->
         <header class="app-header">
             <nav class="app-nav">
-                <nav-button @onClick="showAside = showAside !== true" align="left">사람 {{ markers.length }}</nav-button>
+                <nav-button @onClick="" align="left">메뉴</nav-button>
                 <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
-                <nav-button @onClick="showConfirm = true" align="right">새로고침</nav-button>
+                <nav-button @onClick="" align="right">로그인</nav-button>
             </nav>
         </header>
 
         <!-- 본문 -->
-        <section class="app-body" :style="{bottom: infoListHeight + 'px'}">
+        <section class="app-body" :style="{bottom: (infoListHeight + 60) + 'px'}">
             <div id="map-canvas"></div>
         </section>
 
         <!-- 상세 -->
         <aside class="app-aside">
-            <function-button v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
+            <list-item v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
                 <span class="label icon-marker" :style="{ backgroundImage: 'url(' + m.icon.url + ')' }"></span>
                 <span class="message">{{ m.message }}</span>
                 <a href="#" class="clear-button" @click="clearMarker">&times;</a>
-            </function-button>
+            </list-item>
         </aside>
 
         <!-- 푸터 -->
         <footer class="app-footer">
             <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
+            <div class="function-button-wrap">
+                <function-button @onClick="showAside = showAside !== true">
+                    사람 {{ markers.length }}
+                </function-button>
+                <function-button @onClick="">
+                    장소 {{ places.length }}
+                </function-button>
+                <function-button @onClick="showConfirm = true">
+                    새로고침
+                </function-button>
+                <function-button @onClick="">
+                    지도공유
+                </function-button>
+            </div>
         </footer>
 
         <!-- 소개 팝업 -->
@@ -47,6 +61,7 @@
     import NavAddress from './components/NavAddress.vue';
     import NavButton from './components/NavButton.vue';
     import InfoList from './components/InfoList.vue';
+    import ListItem from './components/ListItem.vue';
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
     import Confirm from './components/Confirm.vue';
@@ -56,7 +71,7 @@
 
     export default {
         name: 'app',
-        components: { NavAddress, NavButton, InfoList, FunctionButton, IntroLayer, Confirm },
+        components: { NavAddress, NavButton, InfoList, ListItem, FunctionButton, IntroLayer, Confirm },
         data () {
             return {
                 geocoder: {},
@@ -67,7 +82,7 @@
                 places: [],
                 infoItemHeight: 30,
                 infoListHeight: 0,
-                showIntroLayer: true,
+                showIntroLayer: false,
                 showConfirm: false,
                 showAside: false
             }
@@ -269,16 +284,16 @@
         top: 0;
         left: 0;
         right: 0;
-        background-color: #fff;
-        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
+        background-color: tomato;
+        box-shadow: 0 3px 0 rgba(0,0,0,.1);
         transition: transform 0.2s;
     }
     .app-body {
         position: fixed;
         left: 0;
         right: 0;
-        top: 32px;
-        bottom: 0;
+        top: 40px;
+        bottom: 40px;
         transition: bottom 0.2s, transform 0.2s;
         #map-canvas {
             width: 100%;
@@ -296,7 +311,7 @@
     }
     .app-aside {
         position: fixed;
-        top: 0;
+        top: 40px;
         bottom: 0;
         left: 0;
         width: 200px;
@@ -304,7 +319,6 @@
         transition: transform 0.2s;
     }
     .with-aside {
-        .app-header,
         .app-footer,
         .app-body {
             transform: translateX(200px);
@@ -317,19 +331,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 32px;
+        height: 40px;
     }
-    .marker-button-wrap {
+    .function-button-wrap {
         overflow: hidden;
-        position: fixed;
-        z-index: 10;
-        top: 42px;
-        left: 10px;
-        text-align: left;
-        border-radius: 3px;
-        box-shadow: 0 1px 4px -1px rgba(0,0,0,.3);
+        display: flex;
     }
-    
+
     .bubble {
         overflow: hidden;
         color: #333;

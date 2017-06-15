@@ -19,9 +19,9 @@
         border: 0;
         margin: 0;
         padding: 0 10px;
-        background-color: #fff;
+        background-color: transparent;
         width: 100%;
         text-align: left;
-        color: #333;
+        color: #fff;
     }
 </style>

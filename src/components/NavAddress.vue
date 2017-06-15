@@ -50,9 +50,9 @@
         text-decoration: none;
         white-space: nowrap;
         transition: color 0.2s ease;
-        color: #999;
+        color: rgba(255,255,255,.6);
         &.active {
-            color: #333;
+            color: #fff;
         }
     }
 </style>
