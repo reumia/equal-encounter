@@ -11,25 +11,28 @@
         </header>
 
         <!-- 본문 -->
-        <section class="app-body" :class="{'with-list': showList}">
+        <section class="app-body" :class="{'with-list': showPeopleList || showPlaceList}">
             <div id="map-canvas"></div>
         </section>
 
         <!-- 상세 -->
         <aside class="app-aside">
-            <list-item v-for="(m, index) in markers" :marker="m" :key="index" :hasButton="true">
-                <span class="label icon-marker" :style="{ backgroundImage: 'url(' + m.icon.url + ')' }"></span>
-                <span class="message">{{ m.message }}</span>
-                <a href="#" class="clear-button" @click="clearMarker">&times;</a>
-            </list-item>
+            메뉴
         </aside>
 
         <!-- 푸터 -->
         <footer class="app-footer">
-            <list :places="places" :class="{active: showList}"></list>
+            <div class="list-wrap" :class="{active: showPeopleList || showPlaceList}">
+                <list :class="{active: showPeopleList}">
+                    <list-item v-for="(marker, index) in markers" :item="marker" :key="index" :iconURL="marker.icon.url" :text="marker.message"></list-item>
+                </list>
+                <list :class="{active: showPlaceList}">
+                    <list-item v-for="(place, index) in places" :item="place" :key="index" :iconURL="place.icon" :text="place.name"></list-item>
+                </list>
+            </div>
             <div class="function-button-wrap">
-                <function-button @onClick="showList = showList !== true">사람 {{ markers.length }}</function-button>
-                <function-button @onClick="showList = showList !== true">장소 {{ places.length }}</function-button>
+                <function-button @onClick="showPeopleList = showPeopleList !== true">사람 {{ markers.length }}</function-button>
+                <function-button @onClick="showPlaceList = showPlaceList !== true">장소 {{ places.length }}</function-button>
                 <function-button @onClick="showConfirm = true">새로고침</function-button>
                 <function-button @onClick="">지도공유</function-button>
             </div>
@@ -75,7 +78,8 @@
                 showIntroLayer: false,
                 showConfirm: false,
                 showAside: false,
-                showList: false
+                showPeopleList: false,
+                showPlaceList: false
             }
         },
         mounted () {
@@ -319,6 +323,9 @@
         justify-content: space-between;
         align-items: center;
         height: 40px;
+    }
+    .list-wrap {
+        position:relative;
     }
     .function-button-wrap {
         overflow: hidden;

@@ -1,62 +1,16 @@
 <template>
     <div class="list">
-        <a href="" class="list-item" v-for="(place, index) in places" :place="place" :key="index" @click="clickItem($event, place)">
-            <span class="icon" :style="{backgroundImage: 'url(' + place.icon + ')'}"></span>
-            <span class="text">{{ place.name }}</span>
-        </a>
+        <slot></slot>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'list',
-        props: ['places'],
-        methods: {
-            clickItem (event, place) {
-                event.preventDefault();
-                alert(place.vicinity);
-            }
-        }
+        name: 'list'
     }
 </script>
 
 <style lang="scss" scoped>
     .list {
-        overflow-y: scroll;
-        height: 300px;
-        transform: translateY(-300px);
-        transition: transform .2s;
-        &.active {
-            transform: traslateY(0);
-         }
-    }
-    .list-item {
-        box-sizing: border-box;
-        position: relative;
-        display: block;
-        padding: 0 10px 0 30px;
-        height: 36px;
-        border-top: 1px solid #f3f3f3;
-        background-color: #fff;
-        color: #333;
-        font-size: 12px;
-        text-align: left;
-        text-decoration: none;
-        white-space: nowrap;
-        cursor: default;
-        transition: background-color 0.2s, color 0.2s;
-        &.active {
-            background-color: tomato;
-            cursor: pointer;
-            color: #fff;
-        }
-        .icon {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            width: 14px;
-            height: 14px;
-            background-size: 14px 14px;
-        }
     }
 </style>
