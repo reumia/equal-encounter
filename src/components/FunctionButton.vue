@@ -19,8 +19,8 @@
         margin: 0;
         background-color: #333;
         width: 100%;
-        height: 60px;
-        line-height: 60px;
+        height: 50px;
+        line-height: 50px;
         color: #fff;
         .label,
         .message {

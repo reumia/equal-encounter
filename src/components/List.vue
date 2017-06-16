@@ -1,8 +1,6 @@
 <template>
-    <div class="info-list" :style="{height: listHeight + 'px'}">
-        <a href="" class="info-list-item" v-for="(place, index) in places" :place="place" :key="index" @click="clickItem($event, place)"
-            :style="{height: itemHeight + 'px', lineHeight: itemHeight + 'px'}"
-        >
+    <div class="list">
+        <a href="" class="list-item" v-for="(place, index) in places" :place="place" :key="index" @click="clickItem($event, place)">
             <span class="icon" :style="{backgroundImage: 'url(' + place.icon + ')'}"></span>
             <span class="text">{{ place.name }}</span>
         </a>
@@ -11,8 +9,8 @@
 
 <script>
     export default {
-        name: 'info-list',
-        props: ['places', 'itemHeight', 'listHeight'],
+        name: 'list',
+        props: ['places'],
         methods: {
             clickItem (event, place) {
                 event.preventDefault();
@@ -23,16 +21,21 @@
 </script>
 
 <style lang="scss" scoped>
-    .info-list {
+    .list {
         overflow-y: scroll;
-        height: 0;
-        transition: height 0.2s;
+        height: 300px;
+        transform: translateY(-300px);
+        transition: transform .2s;
+        &.active {
+            transform: traslateY(0);
+         }
     }
-    .info-list-item {
+    .list-item {
         box-sizing: border-box;
         position: relative;
         display: block;
         padding: 0 10px 0 30px;
+        height: 36px;
         border-top: 1px solid #f3f3f3;
         background-color: #fff;
         color: #333;

@@ -4,14 +4,14 @@
         <!-- 헤더 -->
         <header class="app-header">
             <nav class="app-nav">
-                <nav-button @onClick="" align="left">메뉴</nav-button>
+                <nav-button @onClick="showAside = showAside !== true" align="left">메뉴</nav-button>
                 <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
                 <nav-button @onClick="" align="right">로그인</nav-button>
             </nav>
         </header>
 
         <!-- 본문 -->
-        <section class="app-body" :style="{bottom: (infoListHeight + 60) + 'px'}">
+        <section class="app-body" :class="{'with-list': showList}">
             <div id="map-canvas"></div>
         </section>
 
@@ -26,20 +26,12 @@
 
         <!-- 푸터 -->
         <footer class="app-footer">
-            <info-list :places="places" :itemHeight="infoItemHeight" :listHeight="infoListHeight"></info-list>
+            <list :places="places" :class="{active: showList}"></list>
             <div class="function-button-wrap">
-                <function-button @onClick="showAside = showAside !== true">
-                    사람 {{ markers.length }}
-                </function-button>
-                <function-button @onClick="">
-                    장소 {{ places.length }}
-                </function-button>
-                <function-button @onClick="showConfirm = true">
-                    새로고침
-                </function-button>
-                <function-button @onClick="">
-                    지도공유
-                </function-button>
+                <function-button @onClick="showList = showList !== true">사람 {{ markers.length }}</function-button>
+                <function-button @onClick="showList = showList !== true">장소 {{ places.length }}</function-button>
+                <function-button @onClick="showConfirm = true">새로고침</function-button>
+                <function-button @onClick="">지도공유</function-button>
             </div>
         </footer>
 
@@ -60,7 +52,7 @@
 
     import NavAddress from './components/NavAddress.vue';
     import NavButton from './components/NavButton.vue';
-    import InfoList from './components/InfoList.vue';
+    import List from './components/List.vue';
     import ListItem from './components/ListItem.vue';
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
@@ -71,7 +63,7 @@
 
     export default {
         name: 'app',
-        components: { NavAddress, NavButton, InfoList, ListItem, FunctionButton, IntroLayer, Confirm },
+        components: { NavAddress, NavButton, List, ListItem, FunctionButton, IntroLayer, Confirm },
         data () {
             return {
                 geocoder: {},
@@ -80,11 +72,10 @@
                 markers: [],
                 averageMarker: {},
                 places: [],
-                infoItemHeight: 30,
-                infoListHeight: 0,
                 showIntroLayer: false,
                 showConfirm: false,
-                showAside: false
+                showAside: false,
+                showList: false
             }
         },
         mounted () {
@@ -102,7 +93,7 @@
                 }
             },
             places () {
-                this.getInfoListHeight();
+
             }
         },
         methods: {
@@ -155,13 +146,6 @@
                     if (status === 'OK') this.places = result;
                     else if (status === 'ZERO_RESULTS') this.places = [];
                 });
-            },
-            getInfoListHeight () {
-                let tempHeight = this.places.length * this.infoItemHeight;
-
-                if (tempHeight > 180) tempHeight = 180;
-
-                this.infoListHeight = tempHeight;
             },
             addMarker (latLng) {
                 let marker, markerIcon;
@@ -293,12 +277,15 @@
         left: 0;
         right: 0;
         top: 40px;
-        bottom: 40px;
+        bottom: 50px;
         transition: bottom 0.2s, transform 0.2s;
         #map-canvas {
             width: 100%;
             height: 100%;
         }
+        &.with-list {
+            bottom: 350px;
+         }
     }
     .app-footer {
         overflow: hidden;
