@@ -11,7 +11,7 @@
         </header>
 
         <!-- 본문 -->
-        <section class="app-body" :class="{'with-list': showPeopleList || showPlaceList}">
+        <section class="app-body" :class="{'with-list': showList.wrapper}">
             <div id="map-canvas"></div>
         </section>
 
@@ -22,17 +22,17 @@
 
         <!-- 푸터 -->
         <footer class="app-footer">
-            <div class="list-wrap" :class="{active: showPeopleList || showPlaceList}">
-                <list :class="{active: showPeopleList}">
+            <div class="list-wrap" :class="{active: showList.wrapper}">
+                <list :class="{active: showList.items.PEOPLE}">
                     <list-item v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="marker.icon.size" :text="marker.message"></list-item>
                 </list>
-                <list :class="{active: showPlaceList}">
+                <list :class="{active: showList.items.PLACES}">
                     <list-item v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 20, height: 20}" :text="place.name"></list-item>
                 </list>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="showPeopleList = showPeopleList !== true">사람 {{ markers.length }}</function-button>
-                <function-button @onClick="showPlaceList = showPlaceList !== true">장소 {{ places.length }}</function-button>
+                <function-button @onClick="toggleList('PEOPLE')">사람 {{ markers.length }}</function-button>
+                <function-button @onClick="toggleList('PLACES')">장소 {{ places.length }}</function-button>
                 <function-button @onClick="showConfirm = true">새로고침</function-button>
                 <function-button @onClick="">지도공유</function-button>
             </div>
@@ -75,11 +75,16 @@
                 markers: [],
                 averageMarker: {},
                 places: [],
+                showList: {
+                    wrapper: false,
+                    items: {
+                        PEOPLE: false,
+                        PLACES: false
+                    }
+                },
                 showIntroLayer: false,
                 showConfirm: false,
                 showAside: false,
-                showPeopleList: false,
-                showPlaceList: false
             }
         },
         mounted () {
@@ -171,8 +176,6 @@
 
                 marker.message = this.getRandom(messages);
 
-                console.log(marker.icon);
-
                 this.addBubble(marker);
                 this.markers.push(marker);
             },
@@ -242,6 +245,7 @@
                 this.places = [];
                 this.removeAverageMarker();
                 this.showConfirm = false;
+                this.showList.wrapper = false;
             },
             clearMarker () {
                 console.log('click');
@@ -249,6 +253,16 @@
             disableIntroLayer () {
                 // this.showIntroLayer = false;
                 console.log('캐시정보 저장');
+            },
+            toggleList (type) {
+                if ( this.showList.wrapper === true && this.showList.items[type] === true ) {
+                    this.showList.wrapper = false;
+                } else {
+                    _.each(this.showList.items, (value, key) => {
+                        this.showList.items[key] = key === type;
+                    });
+                    this.showList.wrapper = true;
+                }
             }
         }
     }
@@ -290,7 +304,7 @@
             height: 100%;
         }
         &.with-list {
-            bottom: 350px;
+            bottom: 250px;
          }
     }
     .app-footer {
@@ -328,8 +342,15 @@
     }
     .list-wrap {
         position:relative;
+        height: 0;
+        transition: height 0.2s;
+        &.active {
+            height: 200px;
+        }
     }
     .function-button-wrap {
+        position: relative;
+        z-index: 1;
         overflow: hidden;
         display: flex;
     }
