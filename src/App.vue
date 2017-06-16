@@ -177,7 +177,7 @@
                 marker.message = this.getRandom(messages);
 
                 this.addBubble(marker);
-                this.markers.push(marker);
+                this.markers.unshift(marker);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
