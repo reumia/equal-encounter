@@ -1,4 +1,4 @@
-var path = req uire('path')
+var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
