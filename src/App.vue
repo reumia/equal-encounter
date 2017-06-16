@@ -23,16 +23,16 @@
         <!-- 푸터 -->
         <footer class="app-footer">
             <div class="list-wrap" :class="{active: showList.wrapper}">
-                <list :class="{active: showList.items.PEOPLE}">
-                    <list-item v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="marker.icon.size" :text="marker.message"></list-item>
+                <list :class="{active: showList.items.markers}">
+                    <list-item v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="{width: 12, height: 12}" :text="marker.message"></list-item>
                 </list>
-                <list :class="{active: showList.items.PLACES}">
-                    <list-item v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 20, height: 20}" :text="place.name"></list-item>
+                <list :class="{active: showList.items.places}">
+                    <list-item v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 12, height: 12}" :text="place.name"></list-item>
                 </list>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="toggleList('PEOPLE')">사람 {{ markers.length }}</function-button>
-                <function-button @onClick="toggleList('PLACES')">장소 {{ places.length }}</function-button>
+                <function-button @onClick="toggleList('markers')">사람 {{ markers.length }}</function-button>
+                <function-button @onClick="toggleList('places')">장소 {{ places.length }}</function-button>
                 <function-button @onClick="showConfirm = true">새로고침</function-button>
                 <function-button @onClick="">지도공유</function-button>
             </div>
@@ -72,14 +72,14 @@
                 geocoder: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
-                markers: [],
                 averageMarker: {},
+                markers: [],
                 places: [],
                 showList: {
                     wrapper: false,
                     items: {
-                        PEOPLE: false,
-                        PLACES: false
+                        markers: false,
+                        places: false
                     }
                 },
                 showIntroLayer: false,

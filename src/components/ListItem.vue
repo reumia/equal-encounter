@@ -19,20 +19,22 @@
 
 <style lang="scss" scoped>
     .list-item {
-        display: flex;
-        align-items: center;
+        display: block;
         box-sizing: border-box;
-        padding: 0 10px;
+        padding: 8px 10px;
         margin: 0;
         border: 0;
+        border-top: 1px solid #f3f3f3;
         width: 100%;
-        height: 32px;
-        line-height: 32px;
         background: #fff;
         text-align: left;
     }
-    .label {
+    .label,
+    .message {
         display: inline-block;
-        margin-right: 5px;
+        vertical-align: middle;
+    }
+    .label {
+
     }
 </style>
