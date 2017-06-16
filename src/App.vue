@@ -24,10 +24,10 @@
         <footer class="app-footer">
             <div class="list-wrap" :class="{active: showPeopleList || showPlaceList}">
                 <list :class="{active: showPeopleList}">
-                    <list-item v-for="(marker, index) in markers" :item="marker" :key="index" :iconURL="marker.icon.url" :text="marker.message"></list-item>
+                    <list-item v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="marker.icon.size" :text="marker.message"></list-item>
                 </list>
                 <list :class="{active: showPlaceList}">
-                    <list-item v-for="(place, index) in places" :item="place" :key="index" :iconURL="place.icon" :text="place.name"></list-item>
+                    <list-item v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 20, height: 20}" :text="place.name"></list-item>
                 </list>
             </div>
             <div class="function-button-wrap">
@@ -170,6 +170,8 @@
                 });
 
                 marker.message = this.getRandom(messages);
+
+                console.log(marker.icon);
 
                 this.addBubble(marker);
                 this.markers.push(marker);
