@@ -22,13 +22,13 @@
 
         <!-- 푸터 -->
         <footer class="app-footer">
-            <div class="list-wrap" :class="{active: showList.wrapper}">
-                <list :class="{active: showList.items.markers}">
-                    <list-item v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="{width: 12, height: 12}" :text="marker.message"></list-item>
-                </list>
-                <list :class="{active: showList.items.places}">
-                    <list-item v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 12, height: 12}" :text="place.name"></list-item>
-                </list>
+            <div class="function-panel-wrap" :class="{active: showList.wrapper}">
+                <function-panel :class="{active: showList.items.markers}">
+                    <list-item slot="list-item" v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="{width: 12, height: 12}" :text="marker.message"></list-item>
+                </function-panel>
+                <function-panel :class="{active: showList.items.places}">
+                    <list-item slot="list-item" v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 12, height: 12}" :text="place.name"></list-item>
+                </function-panel>
             </div>
             <div class="function-button-wrap">
                 <function-button @onClick="toggleList('markers')">사람 {{ markers.length }}</function-button>
@@ -55,7 +55,7 @@
 
     import NavAddress from './components/NavAddress.vue';
     import NavButton from './components/NavButton.vue';
-    import List from './components/List.vue';
+    import FunctionPanel from './components/FunctionPanel.vue';
     import ListItem from './components/ListItem.vue';
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
@@ -66,7 +66,7 @@
 
     export default {
         name: 'app',
-        components: { NavAddress, NavButton, List, ListItem, FunctionButton, IntroLayer, Confirm },
+        components: { NavAddress, NavButton, FunctionPanel, ListItem, FunctionButton, IntroLayer, Confirm },
         data () {
             return {
                 geocoder: {},
@@ -289,7 +289,7 @@
         left: 0;
         right: 0;
         background-color: tomato;
-        box-shadow: 0 3px 0 rgba(0,0,0,.1);
+        box-shadow: 0 1px 4px rgba(0,0,0,.2);
         transition: transform 0.2s;
     }
     .app-body {
@@ -314,6 +314,7 @@
         bottom: 0;
         left: 0;
         right: 0;
+        box-shadow: 0 -2px 8px rgba(0,0,0,.2);
         transition: transform 0.2s;
     }
     .app-aside {
@@ -340,7 +341,7 @@
         align-items: center;
         height: 40px;
     }
-    .list-wrap {
+    .function-panel-wrap {
         position:relative;
         height: 0;
         transition: height 0.2s;

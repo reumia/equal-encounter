@@ -24,10 +24,12 @@
         padding: 8px 10px;
         margin: 0;
         border: 0;
-        border-top: 1px solid #f3f3f3;
         width: 100%;
         background: #fff;
         text-align: left;
+    }
+    .list-item ~ .list-item {
+        border-top: 1px solid #eee;
     }
     .label,
     .message {
