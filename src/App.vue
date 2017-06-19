@@ -23,12 +23,8 @@
         <!-- 푸터 -->
         <footer class="app-footer">
             <div class="function-panel-wrap" :class="{active: showList.wrapper}">
-                <function-panel :class="{active: showList.items.markers}" :panelData="panelData">
-                    <list-item @setPanelData="setPanelData(index, markers)" v-for="(marker, index) in markers" :key="index" :item="marker"></list-item>
-                </function-panel>
-                <function-panel :class="{active: showList.items.places}" :panelData="panelData">
-                    <list-item @setPanelData="setPanelData(index, places)" v-for="(place, index) in places" :key="index" :item="place"></list-item>
-                </function-panel>
+                <function-panel :class="{active: showList.items.markers}" :listData="markers"></function-panel>
+                <function-panel :class="{active: showList.items.places}" :listData="places"></function-panel>
             </div>
             <div class="function-button-wrap">
                 <function-button @onClick="toggleList('markers')">사람 {{ markers.length }}</function-button>
@@ -56,7 +52,6 @@
     import NavAddress from './components/NavAddress.vue';
     import NavButton from './components/NavButton.vue';
     import FunctionPanel from './components/FunctionPanel.vue';
-    import ListItem from './components/ListItem.vue';
     import FunctionButton from './components/FunctionButton.vue';
     import IntroLayer from './components/introLayer.vue';
     import Confirm from './components/Confirm.vue';
@@ -66,7 +61,7 @@
 
     export default {
         name: 'app',
-        components: { NavAddress, NavButton, FunctionPanel, ListItem, FunctionButton, IntroLayer, Confirm },
+        components: { NavAddress, NavButton, FunctionPanel, FunctionButton, IntroLayer, Confirm },
         data () {
             return {
                 geocoder: {},
@@ -75,7 +70,6 @@
                 averageMarker: {},
                 markers: [],
                 places: [],
-                panelData: false,
                 showList: {
                     wrapper: false,
                     items: {
@@ -155,14 +149,17 @@
                 service.nearbySearch(request, (result, status) => {
                     if (status === 'OK') {
                         _.each(result, (item) => {
+                            // TODO : 데이터 정리 함수 일원화
                             item.icon = {
                                 url: item.icon,
                                 size: {
                                     width: 12,
                                     height: 12
-                                }
+                                },
                             };
                             item.text = item.name;
+                            item.address = item.vicinity;
+                            item.latLng = item.geometry.location;
                         });
                         this.places = result;
                     }
@@ -187,7 +184,9 @@
                     zIndex: 1
                 });
 
+                // TODO : 데이터 정리 함수 일원화
                 marker.text = this.getRandom(messages);
+                marker.latLng = marker.position;
 
                 this.addBubble(marker);
                 this.markers.unshift(marker);
@@ -276,19 +275,6 @@
                     });
                     this.showList.wrapper = true;
                 }
-
-                this.initPanelData();
-            },
-            initPanelData () {
-                // TODO : 데이터가 있을 경우 첫번째 아이템 디스플레이
-                this.panelData = {};
-            },
-            setPanelData (index, data) {
-                this.panelData = {
-                    text: data[index].text,
-                    icon: data[index].icon
-                };
-                console.log(this.panelData);
             }
         }
     }
