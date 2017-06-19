@@ -23,11 +23,11 @@
         <!-- 푸터 -->
         <footer class="app-footer">
             <div class="function-panel-wrap" :class="{active: showList.wrapper}">
-                <function-panel :class="{active: showList.items.markers}">
-                    <list-item slot="list-item" v-for="(marker, index) in markers" :key="index" :iconURL="marker.icon.url" :iconSize="{width: 12, height: 12}" :text="marker.message"></list-item>
+                <function-panel :class="{active: showList.items.markers}" :panelData="panelData">
+                    <list-item @setPanelData="setPanelData(index, markers)" v-for="(marker, index) in markers" :key="index" :item="marker"></list-item>
                 </function-panel>
-                <function-panel :class="{active: showList.items.places}">
-                    <list-item slot="list-item" v-for="(place, index) in places" :key="index" :iconURL="place.icon" :iconSize="{width: 12, height: 12}" :text="place.name"></list-item>
+                <function-panel :class="{active: showList.items.places}" :panelData="panelData">
+                    <list-item @setPanelData="setPanelData(index, places)" v-for="(place, index) in places" :key="index" :item="place"></list-item>
                 </function-panel>
             </div>
             <div class="function-button-wrap">
@@ -75,6 +75,7 @@
                 averageMarker: {},
                 markers: [],
                 places: [],
+                panelData: false,
                 showList: {
                     wrapper: false,
                     items: {
@@ -152,7 +153,19 @@
 
                 service = new google.maps.places.PlacesService(this.map);
                 service.nearbySearch(request, (result, status) => {
-                    if (status === 'OK') this.places = result;
+                    if (status === 'OK') {
+                        _.each(result, (item) => {
+                            item.icon = {
+                                url: item.icon,
+                                size: {
+                                    width: 12,
+                                    height: 12
+                                }
+                            };
+                            item.text = item.name;
+                        });
+                        this.places = result;
+                    }
                     else if (status === 'ZERO_RESULTS') this.places = [];
                 });
             },
@@ -174,14 +187,14 @@
                     zIndex: 1
                 });
 
-                marker.message = this.getRandom(messages);
+                marker.text = this.getRandom(messages);
 
                 this.addBubble(marker);
                 this.markers.unshift(marker);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
-                    content: '<div class="bubble">' + marker.message + '</div>',
+                    content: '<div class="bubble">' + marker.text + '</div>',
                     hideCloseButton: true,
                     disableAutoPan: true,
                     disableAnimation: true,
@@ -263,6 +276,14 @@
                     });
                     this.showList.wrapper = true;
                 }
+                this.panelData = {};
+            },
+            setPanelData (index, data) {
+                this.panelData = {
+                    text: data[index].text,
+                    icon: data[index].icon
+                };
+                console.log(this.panelData);
             }
         }
     }
@@ -355,19 +376,11 @@
         overflow: hidden;
         display: flex;
     }
-
     .bubble {
         overflow: hidden;
         color: #333;
         font-size: 11px;
         font-weight: bold;
         white-space: nowrap;
-    }
-    .icon-marker {
-        width: 15px;
-        height: 26px;
-        background-size: 15px 15px;
-        background-repeat: no-repeat;
-        background-position: center 5px;
     }
 </style>
