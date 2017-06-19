@@ -264,8 +264,8 @@
                 console.log('click');
             },
             disableIntroLayer () {
-                // this.showIntroLayer = false;
-                console.log('캐시정보 저장');
+                // TODO : 레이어 없애고, 캐시에 관련 데이터 기억
+                this.showIntroLayer = false;
             },
             toggleList (type) {
                 if ( this.showList.wrapper === true && this.showList.items[type] === true ) {
@@ -276,6 +276,11 @@
                     });
                     this.showList.wrapper = true;
                 }
+
+                this.initPanelData();
+            },
+            initPanelData () {
+                // TODO : 데이터가 있을 경우 첫번째 아이템 디스플레이
                 this.panelData = {};
             },
             setPanelData (index, data) {
