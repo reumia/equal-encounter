@@ -11,7 +11,7 @@
         </header>
 
         <!-- 본문 -->
-        <section class="app-body" :class="{'with-list': showList.wrapper}">
+        <section class="app-body" :class="{'with-list': showPanel.wrapper}">
             <div id="map-canvas"></div>
         </section>
 
@@ -22,9 +22,9 @@
 
         <!-- 푸터 -->
         <footer class="app-footer">
-            <div class="function-panel-wrap" :class="{active: showList.wrapper}">
-                <function-panel :class="{active: showList.items.markers}" :listData="markers"></function-panel>
-                <function-panel :class="{active: showList.items.places}" :listData="places"></function-panel>
+            <div class="function-panel-wrap" :class="{active: showPanel.wrapper}">
+                <function-panel :class="{active: showPanel.items.markers}" :listData="markers"></function-panel>
+                <function-panel :class="{active: showPanel.items.places}" :listData="places"></function-panel>
             </div>
             <div class="function-button-wrap">
                 <function-button @onClick="toggleList('markers')">사람 {{ markers.length }}</function-button>
@@ -70,7 +70,7 @@
                 averageMarker: {},
                 markers: [],
                 places: [],
-                showList: {
+                showPanel: {
                     wrapper: false,
                     items: {
                         markers: false,
@@ -257,7 +257,7 @@
                 this.places = [];
                 this.removeAverageMarker();
                 this.showConfirm = false;
-                this.showList.wrapper = false;
+                this.showPanel.wrapper = false;
             },
             clearMarker () {
                 console.log('click');
@@ -267,13 +267,13 @@
                 this.showIntroLayer = false;
             },
             toggleList (type) {
-                if ( this.showList.wrapper === true && this.showList.items[type] === true ) {
-                    this.showList.wrapper = false;
+                if ( this.showPanel.wrapper === true && this.showPanel.items[type] === true ) {
+                    this.showPanel.wrapper = false;
                 } else {
-                    _.each(this.showList.items, (value, key) => {
-                        this.showList.items[key] = key === type;
+                    _.each(this.showPanel.items, (value, key) => {
+                        this.showPanel.items[key] = key === type;
                     });
-                    this.showList.wrapper = true;
+                    this.showPanel.wrapper = true;
                 }
             }
         }
