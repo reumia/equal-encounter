@@ -35,6 +35,7 @@
         },
         methods: {
             getAddress () {
+                // TODO : 지도 정보가 없을 경우 geocoder 사용하여 주소 정보 가져오기
                 console.log(this.panelData.address);
                 return this.panelData.address;
             },
