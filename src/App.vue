@@ -23,8 +23,8 @@
         <!-- 푸터 -->
         <footer class="app-footer">
             <div class="function-panel-wrap" :class="{active: showPanel.wrapper}">
-                <function-panel :class="{active: showPanel.items.markers}" :listData="markers"></function-panel>
-                <function-panel :class="{active: showPanel.items.places}" :listData="places"></function-panel>
+                <function-panel :class="{active: showPanel.items.markers}" :data="markers"></function-panel>
+                <function-panel :class="{active: showPanel.items.places}" :data="places"></function-panel>
             </div>
             <div class="function-button-wrap">
                 <function-button @onClick="toggleList('markers')">사람 {{ markers.length }}</function-button>

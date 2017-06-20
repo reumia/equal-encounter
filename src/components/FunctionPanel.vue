@@ -4,14 +4,14 @@
             <list-item @setPanelData="setPanelData(index, listData)" v-for="(item, index) in listData" :key="index" :item="item"></list-item>
         </div>
         <div class="panel" v-if="Object.keys(panelData).length > 0">
-            <div class="panel-title">
+            <div class="panel-item">
                 <span class="icon" :style="{
                     backgroundImage: 'url(' + panelData.icon.url + ')',
                     width: panelData.icon.size.width + 'px',
                     height: panelData.icon.size.height + 'px',
                     backgroundSize: panelData.icon.size.width + 'px ' + panelData.icon.size.height + 'px'
                 }"></span>
-                <span class="text">{{ panelData.text }}</span>
+                <input type="text" class="input" :value="panelData.text" v-model="panelData.text">
             </div>
             <div class="panel-body">
                 {{ getAddress() }}
@@ -27,9 +27,10 @@
     export default {
         name: 'function-panel',
         components: { ListItem },
-        props: [ 'listData' ],
+        props: [ 'data' ],
         data () {
             return {
+                listData: this.data,
                 panelData: {}
             }
         },
@@ -43,6 +44,7 @@
                 let item = data[index];
 
                 this.panelData = {
+                    id: index,
                     text: item.text,
                     icon: item.icon,
                     address: item.address,
@@ -86,12 +88,30 @@
         background-color: #f3f3f3;
         text-align: left;
     }
-    .panel-title {
+    .panel-item {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.1);
         .text {
 
         }
         .icon {
-            display: inline-block;
+            margin-right: 4px;
+        }
+    }
+    .input {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        width: 100%;
+        background-color: transparent;
+        font-size: 14px;
+        outline: 0;
+        &:focus {
+            color: red;
         }
     }
 </style>
