@@ -287,6 +287,11 @@
         margin: 0;
     }
     .app {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         font-family: sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -295,33 +300,32 @@
     }
     .app-header {
         overflow: hidden;
-        position: fixed;
-        z-index: 10;
+        position: absolute;
         top: 0;
         left: 0;
         right: 0;
+        z-index: 10;
         background-color: tomato;
         box-shadow: 0 1px 4px rgba(0,0,0,.2);
         transition: transform 0.2s;
     }
     .app-body {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 40px;
-        bottom: 50px;
-        transition: bottom 0.2s, transform 0.2s;
+        box-sizing: border-box;
+        padding: 40px 0 50px;
+        width: 100%;
+        height: 100%;
+        transition: padding 0.2s, transform 0.2s;
         #map-canvas {
             width: 100%;
             height: 100%;
         }
         &.with-list {
-            bottom: 250px;
+            padding-bottom: 250px;
          }
     }
     .app-footer {
         overflow: hidden;
-        position: fixed;
+        position: absolute;
         z-index: 10;
         bottom: 0;
         left: 0;
