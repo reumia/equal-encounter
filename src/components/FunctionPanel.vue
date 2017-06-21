@@ -3,15 +3,16 @@
         <div class="list">
             <list-item @setPanelData="setPanelData(index, listData)" v-for="(item, index) in listData" :key="index" :item="item"></list-item>
         </div>
-        <div class="panel" v-if="Object.keys(panelData).length > 0">
-            <div class="panel-item">
-                <span class="icon" :style="{
-                    backgroundImage: 'url(' + panelData.icon.url + ')',
-                    width: panelData.icon.size.width + 'px',
-                    height: panelData.icon.size.height + 'px',
-                    backgroundSize: panelData.icon.size.width + 'px ' + panelData.icon.size.height + 'px'
-                }"></span>
-                <input type="text" class="input" :value="panelData.text" v-model="panelData.text">
+        <div class="panel" v-if="id !== ''">
+            <div class="panel-item" :style="{paddingLeft: (10 + 4 + icon.size.width) + 'px'}">
+                <label for="title" class="icon" :style="{
+                    backgroundImage: 'url(' + icon.url + ')',
+                    width: icon.size.width + 'px',
+                    height: icon.size.height + 'px',
+                    backgroundSize: icon.size.width + 'px ' + icon.size.height + 'px',
+                    marginTop: (icon.size.width * -0.5) + 'px'
+                }"></label>
+                <input id="title" type="text" class="text input" :value="text" v-model="text">
             </div>
             <div class="panel-body">
                 {{ getAddress() }}
@@ -30,24 +31,26 @@
         props: [ 'listData' ],
         data () {
             return {
-                panelData: {}
+                id: '',
+                text: '',
+                icon: '',
+                address: '',
+                latLng: ''
             }
         },
         methods: {
             getAddress () {
                 // TODO : 지도 정보가 없을 경우 geocoder 사용하여 주소 정보 가져오기
-                return this.panelData.address;
+                return this.address;
             },
             setPanelData (index, data) {
                 let item = data[index];
 
-                this.panelData = {
-                    id: index,
-                    text: item.text,
-                    icon: item.icon,
-                    address: item.address,
-                    latLng: item.latLng
-                };
+                this.id = index;
+                this.text = item.text;
+                this.icon = item.icon;
+                this.address = item.address;
+                this.latLng = item.latLng;
             }
         }
     }
@@ -87,29 +90,29 @@
         text-align: left;
     }
     .panel-item {
-        display: flex;
-        align-items: center;
+        position: relative;
         background: #fff;
         padding: 5px 10px;
         border-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,.1);
+        border: 1px solid #ddd;
         .text {
-
+            width: 100%;
+            font-size: 14px;
         }
         .icon {
-            margin-right: 4px;
+            position: absolute;
+            top: 50%;
+            left: 10px;
         }
-    }
-    .input {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        width: 100%;
-        background-color: transparent;
-        font-size: 14px;
-        outline: 0;
-        &:focus {
-            color: red;
+        .input {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background-color: transparent;
+            outline: 0;
+            &:focus {
+                 color: red;
+            }
         }
     }
 </style>
