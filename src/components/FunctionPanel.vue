@@ -8,6 +8,7 @@
                 <span class="text">{{ text }}</span>
             </div>
             <div class="panel-body">
+                <rating-star :rating="rating"></rating-star>
                 <div class="text">{{ getAddress() }}</div>
             </div>
             <div class="panel-image" v-if="images">
@@ -24,10 +25,11 @@
 
 <script>
     import ListItem from './ListItem.vue';
+    import RatingStar from './RatingStar.vue';
 
     export default {
         name: 'function-panel',
-        components: { ListItem },
+        components: { ListItem, RatingStar },
         props: [ 'listData' ],
         data () {
             return {
@@ -35,7 +37,8 @@
                 text: '',
                 address: '',
                 latLng: '',
-                images: ''
+                images: '',
+                rating: ''
             }
         },
         methods: {
@@ -53,6 +56,7 @@
                 this.address = item.address;
                 this.latLng = item.latLng;
                 this.images = item.photos && item.photos.length > 0 ? item.photos : undefined;
+                this.rating = item.rating;
             }
         }
     }
