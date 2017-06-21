@@ -10,7 +10,9 @@
             <div class="panel-body">
                 <div class="text">{{ getAddress() }}</div>
             </div>
-            <div class="panel-image" v-if="image" :style="{backgroundImage: 'url(' + image.getUrl({maxWidth: 640}) + ')'}"></div>
+            <div class="panel-image" v-if="images">
+                <div class="image" v-for="(image, index) in images" :key="index" :style="{backgroundImage: 'url(' + image.getUrl({maxWidth: 320}) + ')'}"></div>
+            </div>
         </div>
         <div class="panel" v-else>
             <div class="panel-head">
@@ -33,7 +35,7 @@
                 text: '',
                 address: '',
                 latLng: '',
-                image: ''
+                images: ''
             }
         },
         methods: {
@@ -50,7 +52,7 @@
                 this.text = item.text;
                 this.address = item.address;
                 this.latLng = item.latLng;
-                this.image = item.photos && item.photos.length > 0 ? item.photos[0] : undefined;
+                this.images = item.photos && item.photos.length > 0 ? item.photos : undefined;
             }
         }
     }
@@ -104,12 +106,10 @@
         padding: 0 15px;
     }
     .panel-image {
+        display: flex;
         position: relative;
         margin: 15px 0 0 -1px;
         height: 100%;
-        background-color: #333;
-        background-size: cover;
-        background-position: center center;
         &:before {
             content: '';
             position: absolute;
@@ -118,6 +118,13 @@
             right: 0;
             bottom: 0;
             border: 1px solid rgba(0,0,0,.16);
+        }
+        .image {
+            flex: 1;
+            height: 100%;
+            background-color: #333;
+            background-size: cover;
+            background-position: center center;
         }
     }
 </style>
