@@ -1,5 +1,5 @@
 <template>
-    <button class="list-item" @click="$emit('setPanelData')">
+    <button class="list-item" @click="$emit('onClick')">
         <span class="label" :style="{
             backgroundImage: 'url(' + item.icon.url + ')',
             width: item.icon.size.width + 'px',
@@ -22,26 +22,26 @@
 
 <style lang="scss" scoped>
     .list-item {
+        box-sizing: border-box;
+        overflow: hidden;
         position: relative;
         display: block;
-        box-sizing: border-box;
-        padding: 8px 10px;
+        padding: 10px 12px;
         margin: 0;
         border: 0;
+        border-bottom: 1px solid #eee;
         width: 100%;
         background: #fff;
         text-align: left;
-        overflow: hidden;
+        font-size: 12px;
         text-overflow: ellipsis;
         white-space: nowrap;
-    }
-    .list-item ~ .list-item {
-        border-top: 1px solid #eee;
+        outline: 0;
     }
     .label {
         position: absolute;
         top: 50%;
-        left: 10px;
+        left: 12px;
     }
     .message {
         overflow: auto;

@@ -27,10 +27,10 @@
                 <function-panel :class="{active: showPanel.items.places}" :listData="places"></function-panel>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="toggleList('markers')">사람 {{ markers.length }}</function-button>
-                <function-button @onClick="toggleList('places')">장소 {{ places.length }}</function-button>
-                <function-button @onClick="showConfirm = true">새로고침</function-button>
-                <function-button @onClick="">지도공유</function-button>
+                <function-button @onClick="toggleList('markers')" :class="{active: showPanel.items.markers}" label="사람" :count="markers.length"></function-button>
+                <function-button @onClick="toggleList('places')" :class="{active: showPanel.items.places}" label="장소" :count="places.length"></function-button>
+                <function-button @onClick="showConfirm = true" label="새로고침"></function-button>
+                <function-button @onClick="" label="지도공유"></function-button>
             </div>
         </footer>
 
@@ -95,9 +95,6 @@
                     this.addAverageMarker();
                     this.getPlaces();
                 }
-            },
-            places () {
-
             }
         },
         methods: {
@@ -311,7 +308,7 @@
     }
     .app-body {
         box-sizing: border-box;
-        padding: 40px 0 50px;
+        padding: 40px 0 200px;
         width: 100%;
         height: 100%;
         transition: padding 0.2s, transform 0.2s;
@@ -320,8 +317,7 @@
             height: 100%;
         }
         &.with-list {
-            padding-bottom: 250px;
-         }
+        }
     }
     .app-footer {
         overflow: hidden;
@@ -359,17 +355,20 @@
     }
     .function-panel-wrap {
         position:relative;
-        height: 0;
+        margin-left: 80px;
+        height: 200px;
         transition: height 0.2s;
         &.active {
-            height: 200px;
+
         }
     }
     .function-button-wrap {
-        position: relative;
+        position: absolute;
         z-index: 1;
+        top: 0;
+        left: 0;
+        width: 80px;
         overflow: hidden;
-        display: flex;
     }
     .bubble {
         overflow: hidden;

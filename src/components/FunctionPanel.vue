@@ -1,25 +1,32 @@
 <template>
     <div class="function-panel">
-        <div class="list">
-            <list-item @setPanelData="setPanelData(index, listData)" v-for="(item, index) in listData" :key="index" :item="item"></list-item>
+
+        <!-- 목록 -->
+        <div class="list" :class="{inactive: showDetail}">
+            <list-item @onClick="setDetailData(index, listData)" v-for="(item, index) in listData" :key="index" :item="item"></list-item>
         </div>
-        <div class="panel" v-if="id !== ''">
-            <div class="panel-head">
+        <!-- 목록 -->
+
+        <!-- 상세 -->
+        <div class="detail" v-if="id !== ''" :class="{active: showDetail}" @click="showDetail = false">
+            <div class="detail-head">
                 <span class="text">{{ text }}</span>
             </div>
-            <div class="panel-body">
+            <div class="detail-body">
                 <rating-star :rating="rating"></rating-star>
                 <div class="text">{{ getAddress() }}</div>
             </div>
-            <div class="panel-image" v-if="images">
+            <div class="detail-image" v-if="images">
                 <div class="image" v-for="(image, index) in images" :key="index" :style="{backgroundImage: 'url(' + image.getUrl({maxWidth: 320}) + ')'}"></div>
             </div>
         </div>
-        <div class="panel" v-else>
-            <div class="panel-head">
+        <div class="detail" v-else>
+            <div class="detail-head">
                 <div class="text">아무것도 선택되지 않음.</div>
             </div>
         </div>
+        <!-- 상세 -->
+
     </div>
 </template>
 
@@ -38,7 +45,8 @@
                 address: '',
                 latLng: '',
                 images: '',
-                rating: ''
+                rating: '',
+                showDetail: false
             }
         },
         methods: {
@@ -46,7 +54,7 @@
                 // TODO : 지도 정보가 없을 경우 geocoder 사용하여 주소 정보 가져오기
                 return this.address;
             },
-            setPanelData (index, data) {
+            setDetailData (index, data) {
                 let item = data[index];
 
                 console.log(item);
@@ -57,6 +65,8 @@
                 this.latLng = item.latLng;
                 this.images = item.photos && item.photos.length > 0 ? item.photos : undefined;
                 this.rating = item.rating;
+
+                this.showDetail = true;
             }
         }
     }
@@ -71,33 +81,40 @@
         left: 0;
         right: 0;
         height: 200px;
-        border-top: 1px solid #bbb;
+        background: #333;
         &.active {
             display: block;
         }
     }
     .list {
         box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 150px;
+        position: relative;
+        width: 100%;
         height: 100%;
-        border-right: 1px solid #ddd;
         overflow-y: auto;
         overflow-x: hidden;
+        background: #fff;
+        opacity: 1;
+        transition: opacity .3s ease;
+        &.inactive {
+            opacity: .4;
+        }
     }
-    .panel {
+    .detail {
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        margin-left: 150px;
+        width: 100%;
         height: 100%;
-        background-color: #f9f9f9;
+        background-color: #fff;
         font-size: 12px;
         text-align: left;
+        transition: transform .3s ease;
+        &.active {
+            transform: translateY(-100%);
+        }
     }
-    .panel-head {
+    .detail-head {
         position: relative;
         padding: 15px 15px 0;
         .text {
@@ -105,11 +122,11 @@
             font-weight: bold;
         }
     }
-    .panel-body {
+    .detail-body {
         margin-top: 6px;
         padding: 0 15px;
     }
-    .panel-image {
+    .detail-image {
         display: flex;
         position: relative;
         margin: 15px 0 0 -1px;

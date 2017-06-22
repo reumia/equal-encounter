@@ -1,26 +1,38 @@
 <template>
     <button class="function-button" @click="$emit('onClick')">
-        <slot></slot>
+        <span>{{ label }}</span>
+        <span>{{ count }}</span>
     </button>
 </template>
 
 <script>
     export default {
         name: 'function-button',
-        props: ['button', 'hasButton']
+        props: ['button', 'label', 'count']
     }
 </script>
 
 <style lang="scss" scoped>
     .function-button {
         -webkit-appearance: none;
-        display: block;
+        display: flex;
+        justify-content: space-between;
         border: 0;
+        border-right: 1px solid #ddd;
         margin: 0;
-        background-color: #333;
+        padding: 0 20px;
+        background-color: #f9f9f9;
         width: 100%;
         height: 50px;
-        line-height: 50px;
-        color: #fff;
+        color: #333;
+        outline: 0;
+        &.active {
+            border-right-style: dashed;
+            background-color: #fff;
+            font-weight: bold;
+        }
+    }
+    .function-button ~ .function-button {
+        border-top: 1px solid #ddd;
     }
 </style>
