@@ -81,7 +81,7 @@
         },
         watch: {
             markers () {
-                this.$store.dispatch('replaceData', {target: 'markers', data: this.markers});
+                this.$store.dispatch('replaceState', {target: 'markers', data: this.markers});
                 if (this.markers.length > 1) {
                     this.removeAverageMarker();
                     this.getAverageLatLng();
@@ -154,10 +154,10 @@
                             item.address = item.vicinity;
                             item.latLng = item.geometry.location;
                         });
-                        this.$store.dispatch('replaceData', {target: 'places', data: result});
+                        this.$store.dispatch('replaceState', {target: 'places', data: result});
                     }
                     else if (status === 'ZERO_RESULTS') {
-                        this.$store.dispatch('replaceData', {target: 'places', data: []});
+                        this.$store.dispatch('replaceState', {target: 'places', data: []});
                     }
                 });
             },
@@ -249,7 +249,7 @@
                     marker.setMap(null);
                 });
                 this.markers = [];
-                this.$store.dispatch('replaceData', {target: 'places', data: []});
+                this.$store.dispatch('replaceState', {target: 'places', data: []});
                 this.removeAverageMarker();
                 this.showConfirm = false;
             },

@@ -14,7 +14,7 @@ const mutations = {
     visiblePanel (state, payload) {
         state.showPanel = payload.name;
     },
-    replaceData (state, payload) {
+    replaceState (state, payload) {
         state[payload.target] = payload.data;
     }
 };
@@ -23,8 +23,8 @@ const actions = {
     setPanel (context, payload) {
         context.commit('visiblePanel', payload);
     },
-    replaceData (context, payload) {
-        context.commit('replaceData', payload);
+    replaceState (context, payload) {
+        context.commit('replaceState', payload);
     }
 };
 
