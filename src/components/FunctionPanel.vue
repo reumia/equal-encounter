@@ -20,11 +20,6 @@
                 <div class="image" v-for="(image, index) in images" :key="index" :style="{backgroundImage: 'url(' + image.getUrl({maxWidth: 320}) + ')'}"></div>
             </div>
         </div>
-        <div class="detail" v-else>
-            <div class="detail-head">
-                <div class="text">아무것도 선택되지 않음.</div>
-            </div>
-        </div>
         <!-- 상세 -->
 
     </div>
@@ -72,17 +67,14 @@
 
 <style lang="scss" scoped>
     .function-panel {
-        display: none;
+        display: block;
         overflow: hidden;
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 200px;
-        &.active {
-            display: block;
-            background: #333;
-        }
+        background: #333;
     }
     .list {
         box-sizing: border-box;

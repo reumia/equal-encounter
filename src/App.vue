@@ -23,12 +23,11 @@
         <!-- 푸터 -->
         <footer class="app-footer">
             <div class="function-panel-wrap">
-                <function-panel :class="{active: $store.getters.isMarkersPanelVisible}" :listData="markers"></function-panel>
-                <function-panel :class="{active: $store.getters.isPlacesPanelVisible}" :listData="places"></function-panel>
+                <function-panel :listData="$store.getters.panelData"></function-panel>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="$store.dispatch('setVisiblePanel', {name: 'markers'})" :class="{active: $store.getters.isMarkersPanelVisible}" label="사람" :count="markers.length"></function-button>
-                <function-button @onClick="$store.dispatch('setVisiblePanel', {name: 'places'})" :class="{active: $store.getters.isPlacesPanelVisible}" label="장소" :count="places.length"></function-button>
+                <function-button @onClick="$store.dispatch('setPanel', {name: 'markers'})" :class="{active: $store.getters.isMarkersPanelVisible}" label="사람" :count="$store.getters.markersLength"></function-button>
+                <function-button @onClick="$store.dispatch('setPanel', {name: 'places'})" :class="{active: $store.getters.isPlacesPanelVisible}" label="장소" :count="$store.getters.placesLength"></function-button>
                 <function-button @onClick="showConfirm = true" label="새로고침"></function-button>
                 <function-button @onClick="" label="지도공유"></function-button>
             </div>
@@ -69,7 +68,6 @@
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
                 averageMarker: {},
                 markers: [],
-                places: [],
                 showIntroLayer: false,
                 showConfirm: false,
                 showAside: false,
@@ -78,10 +76,12 @@
         mounted () {
             this.$nextTick(() => {
                 this.initMap();
+                this.setPanel('markers');
             });
         },
         watch: {
             markers () {
+                this.$store.dispatch('replaceData', {target: 'markers', data: this.markers});
                 if (this.markers.length > 1) {
                     this.removeAverageMarker();
                     this.getAverageLatLng();
@@ -112,14 +112,17 @@
                     this.map.addListener('click', this.clickMap);
                 });
             },
+            setPanel (type) {
+                this.$store.dispatch('setPanel', {name: type});
+            },
             getRandom (array) {
                 return array[_.random(0, array.length - 1)];
             },
             getAverageLatLng () {
                 let lat, lng;
 
-                lat = _.meanBy(this.markers, (object) => { return object.position.lat(); });
-                lng = _.meanBy(this.markers, (object) => { return object.position.lng(); });
+                lat = _.meanBy(this.$store.getters.markers, (object) => { return object.position.lat(); });
+                lng = _.meanBy(this.$store.getters.markers, (object) => { return object.position.lng(); });
 
                 return {
                     lat: lat,
@@ -151,9 +154,11 @@
                             item.address = item.vicinity;
                             item.latLng = item.geometry.location;
                         });
-                        this.places = result;
+                        this.$store.dispatch('replaceData', {target: 'places', data: result});
                     }
-                    else if (status === 'ZERO_RESULTS') this.places = [];
+                    else if (status === 'ZERO_RESULTS') {
+                        this.$store.dispatch('replaceData', {target: 'places', data: []});
+                    }
                 });
             },
             addMarker (latLng) {
@@ -244,7 +249,7 @@
                     marker.setMap(null);
                 });
                 this.markers = [];
-                this.places = [];
+                this.$store.dispatch('replaceData', {target: 'places', data: []});
                 this.removeAverageMarker();
                 this.showConfirm = false;
             },
@@ -254,14 +259,6 @@
             disableIntroLayer () {
                 // TODO : 레이어 없애고, 캐시에 관련 데이터 기억
                 this.showIntroLayer = false;
-            },
-            toggleList (type) {
-//                if ( this.$store.state.showPanel.items[type] === true ) {
-//                } else {
-//                    _.each(this.$store.state.showPanel.items, (value, key) => {
-//                        this.$store.state.showPanel.items[key] = key === type;
-//                    });
-//                }
             }
         }
     }
@@ -346,9 +343,6 @@
         margin-left: 80px;
         height: 200px;
         transition: height 0.2s;
-        &.active {
-
-        }
     }
     .function-button-wrap {
         overflow: hidden;
