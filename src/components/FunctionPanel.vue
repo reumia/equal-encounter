@@ -81,14 +81,13 @@
         left: 0;
         right: 0;
         height: 200px;
-        background: #333;
         &.active {
             display: block;
+            background: #333;
         }
     }
     .list {
         box-sizing: border-box;
-        position: relative;
         width: 100%;
         height: 100%;
         overflow-y: auto;
@@ -97,7 +96,7 @@
         opacity: 1;
         transition: opacity .3s ease;
         &.inactive {
-            opacity: .4;
+            opacity: .8;
         }
     }
     .detail {

@@ -363,12 +363,13 @@
         }
     }
     .function-button-wrap {
+        overflow: hidden;
         position: absolute;
         z-index: 1;
         top: 0;
         left: 0;
         width: 80px;
-        overflow: hidden;
+        background: #f9f9f9;
     }
     .bubble {
         overflow: hidden;

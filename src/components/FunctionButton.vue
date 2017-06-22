@@ -21,18 +21,19 @@
         border-right: 1px solid #ddd;
         margin: 0;
         padding: 0 20px;
-        background-color: #f9f9f9;
+        background-color: transparent;
         width: 100%;
         height: 50px;
         color: #333;
         outline: 0;
         &.active {
             border-right-style: dashed;
+            border-right-color: #ddd;
             background-color: #fff;
             font-weight: bold;
         }
     }
     .function-button ~ .function-button {
-        border-top: 1px solid #ddd;
+        border-top: 1px solid #e3e3e3;
     }
 </style>
