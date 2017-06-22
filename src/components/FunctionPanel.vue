@@ -65,8 +65,6 @@
                 this.latLng = item.latLng;
                 this.images = item.photos && item.photos.length > 0 ? item.photos : undefined;
                 this.rating = item.rating;
-
-                this.showDetail = true;
             }
         }
     }

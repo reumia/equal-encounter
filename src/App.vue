@@ -11,7 +11,7 @@
         </header>
 
         <!-- 본문 -->
-        <section class="app-body" :class="{'with-list': showPanel.wrapper}">
+        <section class="app-body">
             <div id="map-canvas"></div>
         </section>
 
@@ -22,13 +22,13 @@
 
         <!-- 푸터 -->
         <footer class="app-footer">
-            <div class="function-panel-wrap" :class="{active: showPanel.wrapper}">
-                <function-panel :class="{active: showPanel.items.markers}" :listData="markers"></function-panel>
-                <function-panel :class="{active: showPanel.items.places}" :listData="places"></function-panel>
+            <div class="function-panel-wrap">
+                <function-panel :class="{active: $store.getters.isMarkersPanelVisible}" :listData="markers"></function-panel>
+                <function-panel :class="{active: $store.getters.isPlacesPanelVisible}" :listData="places"></function-panel>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="toggleList('markers')" :class="{active: showPanel.items.markers}" label="사람" :count="markers.length"></function-button>
-                <function-button @onClick="toggleList('places')" :class="{active: showPanel.items.places}" label="장소" :count="places.length"></function-button>
+                <function-button @onClick="$store.dispatch('setVisiblePanel', {name: 'markers'})" :class="{active: $store.getters.isMarkersPanelVisible}" label="사람" :count="markers.length"></function-button>
+                <function-button @onClick="$store.dispatch('setVisiblePanel', {name: 'places'})" :class="{active: $store.getters.isPlacesPanelVisible}" label="장소" :count="places.length"></function-button>
                 <function-button @onClick="showConfirm = true" label="새로고침"></function-button>
                 <function-button @onClick="" label="지도공유"></function-button>
             </div>
@@ -70,13 +70,6 @@
                 averageMarker: {},
                 markers: [],
                 places: [],
-                showPanel: {
-                    wrapper: false,
-                    items: {
-                        markers: false,
-                        places: false
-                    }
-                },
                 showIntroLayer: false,
                 showConfirm: false,
                 showAside: false,
@@ -254,7 +247,6 @@
                 this.places = [];
                 this.removeAverageMarker();
                 this.showConfirm = false;
-                this.showPanel.wrapper = false;
             },
             clearMarker () {
                 console.log('click');
@@ -264,14 +256,12 @@
                 this.showIntroLayer = false;
             },
             toggleList (type) {
-                if ( this.showPanel.wrapper === true && this.showPanel.items[type] === true ) {
-                    this.showPanel.wrapper = false;
-                } else {
-                    _.each(this.showPanel.items, (value, key) => {
-                        this.showPanel.items[key] = key === type;
-                    });
-                    this.showPanel.wrapper = true;
-                }
+//                if ( this.$store.state.showPanel.items[type] === true ) {
+//                } else {
+//                    _.each(this.$store.state.showPanel.items, (value, key) => {
+//                        this.$store.state.showPanel.items[key] = key === type;
+//                    });
+//                }
             }
         }
     }
@@ -315,8 +305,6 @@
         #map-canvas {
             width: 100%;
             height: 100%;
-        }
-        &.with-list {
         }
     }
     .app-footer {
