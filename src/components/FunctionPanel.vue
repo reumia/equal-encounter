@@ -2,13 +2,13 @@
     <div class="function-panel">
 
         <!-- 목록 -->
-        <div class="list" :class="{inactive: showDetail}">
+        <div class="list" :class="{inactive: $store.getters.showPanelDetail}">
             <list-item @onClick="setDetailData(index, listData)" v-for="(item, index) in listData" :key="index" :item="item"></list-item>
         </div>
         <!-- 목록 -->
 
         <!-- 상세 -->
-        <div class="detail" v-if="id !== ''" :class="{active: showDetail}" @click="showDetail = false">
+        <div class="detail" :class="{active: $store.getters.showPanelDetail}" @click="$store.dispatch('togglePanelDetail')">
             <div class="detail-head">
                 <span class="text">{{ text }}</span>
             </div>
@@ -60,6 +60,8 @@
                 this.latLng = item.latLng;
                 this.images = item.photos && item.photos.length > 0 ? item.photos : undefined;
                 this.rating = item.rating;
+
+                this.$store.dispatch('togglePanelDetail');
             }
         }
     }

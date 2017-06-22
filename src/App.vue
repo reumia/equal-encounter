@@ -26,8 +26,8 @@
                 <function-panel :listData="$store.getters.panelData"></function-panel>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="$store.dispatch('setPanel', {name: 'markers'})" :class="{active: $store.getters.isMarkersPanelVisible}" label="사람" :count="$store.getters.markersLength"></function-button>
-                <function-button @onClick="$store.dispatch('setPanel', {name: 'places'})" :class="{active: $store.getters.isPlacesPanelVisible}" label="장소" :count="$store.getters.placesLength"></function-button>
+                <function-button @onClick="setPanel('markers')" :class="{active: $store.getters.isMarkersPanelVisible}" label="사람" :count="$store.getters.markersLength"></function-button>
+                <function-button @onClick="setPanel('places')" :class="{active: $store.getters.isPlacesPanelVisible}" label="장소" :count="$store.getters.placesLength"></function-button>
                 <function-button @onClick="showConfirm = true" label="새로고침"></function-button>
                 <function-button @onClick="" label="지도공유"></function-button>
             </div>
@@ -114,6 +114,7 @@
             },
             setPanel (type) {
                 this.$store.dispatch('setPanel', {name: type});
+                this.$store.dispatch('hidePanelDetail');
             },
             getRandom (array) {
                 return array[_.random(0, array.length - 1)];

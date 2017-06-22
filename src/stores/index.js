@@ -7,7 +7,7 @@ const state = {
     'markers': [],
     'places': [],
     'showPanel': 'markers',
-    'showDetail': false
+    'showPanelDetail': false
 };
 
 const mutations = {
@@ -16,6 +16,12 @@ const mutations = {
     },
     replaceState (state, payload) {
         state[payload.target] = payload.data;
+    },
+    togglePanelDetail (state) {
+        state.showPanelDetail = state.showPanelDetail !== true;
+    },
+    hidePanelDetail (state) {
+        state.showPanelDetail = false;
     }
 };
 
@@ -25,6 +31,12 @@ const actions = {
     },
     replaceState (context, payload) {
         context.commit('replaceState', payload);
+    },
+    togglePanelDetail (context) {
+        context.commit('togglePanelDetail');
+    },
+    hidePanelDetail (context) {
+        context.commit('hidePanelDetail');
     }
 };
 
@@ -49,6 +61,9 @@ const getters = {
     },
     panelData: (state) => {
         return state[state.showPanel];
+    },
+    showPanelDetail: (state) => {
+        return state.showPanelDetail;
     }
 };
 
