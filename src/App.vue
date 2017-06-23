@@ -5,7 +5,7 @@
         <header class="app-header">
             <nav class="app-nav">
                 <nav-button @onClick="showAside = showAside !== true" align="left">메뉴</nav-button>
-                <nav-address :geocoder="geocoder" :marker="averageMarker"></nav-address>
+                <nav-address :geocoder="geocoder" :marker="$store.getters.averageMarker"></nav-address>
                 <nav-button @onClick="" align="right">로그인</nav-button>
             </nav>
         </header>
@@ -66,7 +66,6 @@
                 geocoder: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
-                averageMarker: {},
                 markers: [],
                 showIntroLayer: false,
                 showConfirm: false,
@@ -134,7 +133,7 @@
                 let request, service;
 
                 request = {
-                    location: this.averageMarker.position,
+                    location: this.$store.getters.averageMarker.position,
                     radius: '500',
                     types: ['cafe']
                 };
@@ -229,13 +228,12 @@
                 });
 
                 // marker.addListener('click', callback);
-
-                this.averageMarker = marker;
+                this.$store.dispatch('setAverageMarker', marker);
             },
             removeAverageMarker () {
-                if (typeof this.averageMarker.setMap !== 'undefined') {
-                    this.averageMarker.setMap(null);
-                    this.averageMarker = {};
+                if (typeof this.$store.getters.averageMarker.setMap !== 'undefined') {
+                    this.$store.getters.averageMarker.setMap(null);
+                    this.$store.dispatch('setAverageMarker', {});
                 }
             },
             clickMap (event) {

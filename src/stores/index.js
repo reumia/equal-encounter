@@ -6,6 +6,7 @@ Vue.use(Vuex);
 const state = {
     'markers': [],
     'places': [],
+    'averageMarker': {},
     'visiblePanel': 'markers',
     'showPanelDetail': false
 };
@@ -13,6 +14,9 @@ const state = {
 const mutations = {
     setVisiblePanel (state, payload) {
         state.visiblePanel = payload.name;
+    },
+    setAverageMarker (state, payload) {
+        state.averageMarker = payload;
     },
     replaceState (state, payload) {
         state[payload.target] = payload.data;
@@ -28,6 +32,9 @@ const mutations = {
 const actions = {
     setPanel (context, payload) {
         context.commit('setVisiblePanel', payload);
+    },
+    setAverageMarker (context, payload) {
+        context.commit('setAverageMarker', payload);
     },
     replaceState (context, payload) {
         context.commit('replaceState', payload);
@@ -64,6 +71,9 @@ const getters = {
     },
     showPanelDetail: (state) => {
         return state.showPanelDetail;
+    },
+    averageMarker: (state) => {
+        return state.averageMarker;
     }
 };
 
