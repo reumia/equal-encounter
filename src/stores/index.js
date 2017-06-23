@@ -42,10 +42,10 @@ const actions = {
 
 const getters = {
     isMarkersPanelVisible: (state) => {
-        return state.showPanel === 'markers';
+        return state.visiblePanel === 'markers';
     },
     isPlacesPanelVisible: (state) => {
-        return state.showPanel === 'places';
+        return state.visiblePanel === 'places';
     },
     markers: (state) => {
         return state.markers;
@@ -60,7 +60,7 @@ const getters = {
         return state.places.length;
     },
     panelData: (state) => {
-        return state[state.showPanel];
+        return state[state.visiblePanel];
     },
     showPanelDetail: (state) => {
         return state.showPanelDetail;
