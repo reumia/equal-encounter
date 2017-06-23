@@ -5,7 +5,7 @@
         <header class="app-header">
             <nav class="app-nav">
                 <nav-button @onClick="showAside = showAside !== true" align="left">메뉴</nav-button>
-                <nav-address :geocoder="geocoder" :marker="$store.getters.averageMarker"></nav-address>
+                <nav-address :geocoder="geocoder" :marker="getAverageMarker()"></nav-address>
                 <nav-button @onClick="" align="right">로그인</nav-button>
             </nav>
         </header>
@@ -23,11 +23,11 @@
         <!-- 푸터 -->
         <footer class="app-footer">
             <div class="function-panel-wrap">
-                <function-panel :listData="$store.getters.panelData"></function-panel>
+                <function-panel :listData="getPanelData()"></function-panel>
             </div>
             <div class="function-button-wrap">
-                <function-button @onClick="setPanel('markers')" :class="{active: $store.getters.isMarkersPanelVisible}" label="사람" :count="$store.getters.markersLength"></function-button>
-                <function-button @onClick="setPanel('places')" :class="{active: $store.getters.isPlacesPanelVisible}" label="장소" :count="$store.getters.placesLength"></function-button>
+                <function-button @onClick="setPanel('markers')" :class="{active: getIsMarkersPanelVisible()}" label="사람" :count="getMarkersLength()"></function-button>
+                <function-button @onClick="setPanel('places')" :class="{active: getIsPlacesPanelVisible()}" label="장소" :count="getPlacesLength()"></function-button>
                 <function-button @onClick="showConfirm = true" label="새로고침"></function-button>
                 <function-button @onClick="" label="지도공유"></function-button>
             </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import { mapMutations } from 'vuex';
+    import { mapGetters, mapMutations } from 'vuex';
 
     import _ from 'lodash';
     import GoogleMapsLoader from 'google-maps';
@@ -79,12 +79,9 @@
                 this.setPanel('markers');
             });
 
-            this.$store.watch(() => {
-                return this.$store.getters.markers;
-            }, () => {
-                let store = this.$store;
+            this.$store.watch(this.getMarkers, () => {
 
-                if (store.getters.markersLength > 1) {
+                if (this.getMarkersLength() > 1) {
                     this.clearAverageMarker();
                     this.addAverageMarker();
                     this.getPlaces();
@@ -101,6 +98,15 @@
                 'hidePanelDetail',
                 'clearAverageMarker'
             ]),
+            ...mapGetters({
+                'getIsMarkersPanelVisible': 'isMarkersPanelVisible',
+                'getIsPlacesPanelVisible': 'isPlacesPanelVisible',
+                'getMarkers': 'markers',
+                'getMarkersLength': 'markersLength',
+                'getPlacesLength': 'placesLength',
+                'getPanelData': 'panelData',
+                'getAverageMarker': 'averageMarker'
+            }),
             initMap () {
                 let canvas = document.getElementById('map-canvas');
 
@@ -132,8 +138,8 @@
             getAverageLatLng () {
                 let lat, lng;
 
-                lat = _.meanBy(this.$store.getters.markers, (object) => { return object.position.lat(); });
-                lng = _.meanBy(this.$store.getters.markers, (object) => { return object.position.lng(); });
+                lat = _.meanBy(this.getMarkers(), (object) => { return object.position.lat(); });
+                lng = _.meanBy(this.getMarkers(), (object) => { return object.position.lng(); });
 
                 return {
                     lat: lat,
@@ -144,7 +150,7 @@
                 let request, service;
 
                 request = {
-                    location: this.$store.getters.averageMarker.position,
+                    location: this.getAverageMarker().position,
                     radius: '500',
                     types: ['cafe']
                 };

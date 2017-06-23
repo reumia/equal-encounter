@@ -2,13 +2,13 @@
     <div class="function-panel">
 
         <!-- 목록 -->
-        <div class="list" :class="{inactive: $store.getters.showPanelDetail}">
+        <div class="list" :class="{inactive: getShowPanelDetail()}">
             <list-item @onClick="setDetailData(index, listData)" v-for="(item, index) in listData" :key="index" :item="item"></list-item>
         </div>
         <!-- 목록 -->
 
         <!-- 상세 -->
-        <div class="detail" :class="{active: $store.getters.showPanelDetail}" @click="togglePanelDetail">
+        <div class="detail" :class="{active: getShowPanelDetail()}" @click="togglePanelDetail">
             <div class="detail-head">
                 <span class="text">{{ text }}</span>
             </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import { mapMutations } from 'vuex';
+    import { mapGetters, mapMutations } from 'vuex';
 
     import ListItem from './ListItem.vue';
     import RatingStar from './RatingStar.vue';
@@ -50,6 +50,9 @@
             ...mapMutations ([
                 'togglePanelDetail'
             ]),
+            ...mapGetters ({
+                'getShowPanelDetail': 'showPanelDetail'
+            }),
             getAddress () {
                 // TODO : 지도 정보가 없을 경우 geocoder 사용하여 주소 정보 가져오기
                 return this.address;
