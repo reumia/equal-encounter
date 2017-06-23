@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import _ from 'lodash';
 
 Vue.use(Vuex);
 
@@ -18,8 +19,18 @@ const mutations = {
     setAverageMarker (state, payload) {
         state.averageMarker = payload;
     },
-    replaceState (state, payload) {
-        state[payload.target] = payload.data;
+    addMarker (state, payload) {
+        state.markers.unshift(payload);
+    },
+    clearMarkers (state) {
+        _.each(state.markers, (marker) => {
+            marker.bubble.setMap(null);
+            marker.setMap(null);
+        });
+        state.markers = [];
+    },
+    replacePlaces (state, payload) {
+        state.places = payload.places;
     },
     togglePanelDetail (state) {
         state.showPanelDetail = state.showPanelDetail !== true;
@@ -27,32 +38,11 @@ const mutations = {
     hidePanelDetail (state) {
         state.showPanelDetail = false;
     },
-    cleanAverageMarker (state) {
+    clearAverageMarker (state) {
         if (typeof state.averageMarker.setMap !== 'undefined') {
             state.averageMarker.setMap(null);
             state.averageMarker = {};
         }
-    }
-};
-
-const actions = {
-    setPanel (context, payload) {
-        context.commit('setVisiblePanel', payload);
-    },
-    setAverageMarker (context, payload) {
-        context.commit('setAverageMarker', payload);
-    },
-    cleanAverageMarker (context) {
-        context.commit('cleanAverageMarker');
-    },
-    replaceState (context, payload) {
-        context.commit('replaceState', payload);
-    },
-    togglePanelDetail (context) {
-        context.commit('togglePanelDetail');
-    },
-    hidePanelDetail (context) {
-        context.commit('hidePanelDetail');
     }
 };
 
@@ -89,14 +79,7 @@ const getters = {
 const store = new Vuex.Store({
     state,
     getters,
-    actions,
     mutations
-});
-
-store.watch(getters.markers, () => {
-    if (store.getters.markersLength > 1) {
-        store.dispatch('cleanAverageMarker');
-    }
 });
 
 export default store;

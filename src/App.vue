@@ -44,6 +44,8 @@
 </template>
 
 <script>
+    import { mapMutations } from 'vuex';
+
     import _ from 'lodash';
     import GoogleMapsLoader from 'google-maps';
     import infoBubble from 'js-info-bubble';
@@ -66,8 +68,7 @@
                 geocoder: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
-                markers: [],
-                showIntroLayer: false,
+                showIntroLayer: true,
                 showConfirm: false,
                 showAside: false,
             }
@@ -77,18 +78,29 @@
                 this.initMap();
                 this.setPanel('markers');
             });
-        },
-        watch: {
-            markers () {
-                // TODO : 실행하는 함수들을 모두 vuex로 옮길 수 없어서 markers를 data로 보관하고 vuex가 복사해가는 방식으로 구현하였음. 리팩토링 방법 모색.
-                this.$store.dispatch('replaceState', {target: 'markers', data: this.markers});
-                if (this.$store.getters.markersLength > 1) {
+
+            this.$store.watch(() => {
+                return this.$store.getters.markers;
+            }, () => {
+                let store = this.$store;
+
+                if (store.getters.markersLength > 1) {
+                    this.clearAverageMarker();
                     this.addAverageMarker();
                     this.getPlaces();
                 }
-            }
+            });
         },
         methods: {
+            ...mapMutations([
+                'setVisiblePanel',
+                'setAverageMarker',
+                'addMarker',
+                'clearMarkers',
+                'replacePlaces',
+                'hidePanelDetail',
+                'clearAverageMarker'
+            ]),
             initMap () {
                 let canvas = document.getElementById('map-canvas');
 
@@ -111,8 +123,8 @@
                 });
             },
             setPanel (type) {
-                this.$store.dispatch('setPanel', {name: type});
-                this.$store.dispatch('hidePanelDetail');
+                this.setVisiblePanel({name: type});
+                this.hidePanelDetail();
             },
             getRandom (array) {
                 return array[_.random(0, array.length - 1)];
@@ -153,14 +165,14 @@
                             item.address = item.vicinity;
                             item.latLng = item.geometry.location;
                         });
-                        this.$store.dispatch('replaceState', {target: 'places', data: result});
+                        this.replacePlaces({places: result});
                     }
                     else if (status === 'ZERO_RESULTS') {
-                        this.$store.dispatch('replaceState', {target: 'places', data: []});
+                        this.replacePlaces({places: []});
                     }
                 });
             },
-            addMarker (latLng) {
+            getMarker (latLng) {
                 let marker, markerIcon;
 
                 markerIcon = this.getRandom(markerIcons);
@@ -183,7 +195,7 @@
                 marker.latLng = marker.position;
 
                 this.addBubble(marker);
-                this.markers.unshift(marker);
+                this.addMarker(marker);
             },
             addBubble (marker) {
                 let bubble = new InfoBubble({
@@ -227,30 +239,20 @@
                 });
 
                 // marker.addListener('click', callback);
-                this.$store.dispatch('setAverageMarker', marker);
-            },
-            removeAverageMarker () {
-                if (typeof this.$store.getters.averageMarker.setMap !== 'undefined') {
-                    this.$store.getters.averageMarker.setMap(null);
-                    this.$store.dispatch('setAverageMarker', {});
-                }
+                this.setAverageMarker(marker);
             },
             clickMap (event) {
-                this.addMarker({
+                this.getMarker({
                     lat: event.latLng.lat(),
                     lng: event.latLng.lng()
                 });
             },
             clearMap () {
-                _.each(this.markers, (marker) => {
-                    marker.bubble.setMap(null);
-                    marker.setMap(null);
-                });
-                this.markers = [];
-                this.removeAverageMarker();
                 this.showConfirm = false;
-                this.$store.dispatch('hidePanelDetail');
-                this.$store.dispatch('replaceState', {target: 'places', data: []});
+                this.clearMarkers();
+                this.clearAverageMarker();
+                this.hidePanelDetail();
+                this.replacePlaces({places: []});
             },
             clearMarker () {
                 console.log('click');

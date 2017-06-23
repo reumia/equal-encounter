@@ -8,7 +8,7 @@
         <!-- 목록 -->
 
         <!-- 상세 -->
-        <div class="detail" :class="{active: $store.getters.showPanelDetail}" @click="$store.dispatch('togglePanelDetail')">
+        <div class="detail" :class="{active: $store.getters.showPanelDetail}" @click="togglePanelDetail">
             <div class="detail-head">
                 <span class="text">{{ text }}</span>
             </div>
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+    import { mapMutations } from 'vuex';
+
     import ListItem from './ListItem.vue';
     import RatingStar from './RatingStar.vue';
 
@@ -45,6 +47,9 @@
             }
         },
         methods: {
+            ...mapMutations ([
+                'togglePanelDetail'
+            ]),
             getAddress () {
                 // TODO : 지도 정보가 없을 경우 geocoder 사용하여 주소 정보 가져오기
                 return this.address;
@@ -61,7 +66,7 @@
                 this.images = item.photos && item.photos.length > 0 ? item.photos : undefined;
                 this.rating = item.rating;
 
-                this.$store.dispatch('togglePanelDetail');
+                this.togglePanelDetail();
             }
         }
     }
