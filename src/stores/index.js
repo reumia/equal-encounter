@@ -26,6 +26,12 @@ const mutations = {
     },
     hidePanelDetail (state) {
         state.showPanelDetail = false;
+    },
+    cleanAverageMarker (state) {
+        if (typeof state.averageMarker.setMap !== 'undefined') {
+            state.averageMarker.setMap(null);
+            state.averageMarker = {};
+        }
     }
 };
 
@@ -35,6 +41,9 @@ const actions = {
     },
     setAverageMarker (context, payload) {
         context.commit('setAverageMarker', payload);
+    },
+    cleanAverageMarker (context) {
+        context.commit('cleanAverageMarker');
     },
     replaceState (context, payload) {
         context.commit('replaceState', payload);
@@ -85,7 +94,9 @@ const store = new Vuex.Store({
 });
 
 store.watch(getters.markers, () => {
-
+    if (store.getters.markersLength > 1) {
+        store.dispatch('cleanAverageMarker');
+    }
 });
 
 export default store;

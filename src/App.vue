@@ -82,8 +82,7 @@
             markers () {
                 // TODO : 실행하는 함수들을 모두 vuex로 옮길 수 없어서 markers를 data로 보관하고 vuex가 복사해가는 방식으로 구현하였음. 리팩토링 방법 모색.
                 this.$store.dispatch('replaceState', {target: 'markers', data: this.markers});
-                if (this.markers.length > 1) {
-                    this.removeAverageMarker();
+                if (this.$store.getters.markersLength > 1) {
                     this.addAverageMarker();
                     this.getPlaces();
                 }
