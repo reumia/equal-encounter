@@ -12,7 +12,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .function-button {
         -webkit-appearance: none;
         display: flex;

@@ -20,7 +20,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .list-item {
         box-sizing: border-box;
         overflow: hidden;

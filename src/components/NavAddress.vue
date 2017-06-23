@@ -42,7 +42,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .nav-address {
         padding: 0 10px;
         font-size: 12px;

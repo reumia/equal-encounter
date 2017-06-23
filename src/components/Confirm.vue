@@ -36,7 +36,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .modal-mask {
         position: fixed;
         z-index: 9998;

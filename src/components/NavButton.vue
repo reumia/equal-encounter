@@ -11,7 +11,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .nav-button {
         -webkit-appearance: none;
         position: relative;

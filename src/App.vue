@@ -85,7 +85,6 @@
                 this.$store.dispatch('replaceState', {target: 'markers', data: this.markers});
                 if (this.markers.length > 1) {
                     this.removeAverageMarker();
-                    this.getAverageLatLng();
                     this.addAverageMarker();
                     this.getPlaces();
                 }
@@ -251,9 +250,10 @@
                     marker.setMap(null);
                 });
                 this.markers = [];
-                this.$store.dispatch('replaceState', {target: 'places', data: []});
                 this.removeAverageMarker();
                 this.showConfirm = false;
+                this.$store.dispatch('hidePanelDetail');
+                this.$store.dispatch('replaceState', {target: 'places', data: []});
             },
             clearMarker () {
                 console.log('click');
@@ -266,7 +266,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" rel="stylesheet/scss">
     html,
     body {
         padding: 0;

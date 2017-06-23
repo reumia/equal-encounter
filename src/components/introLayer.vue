@@ -34,7 +34,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .intro-layer {
         display: flex;
         flex-direction: column;

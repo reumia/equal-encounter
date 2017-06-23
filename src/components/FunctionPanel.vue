@@ -67,7 +67,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped rel="stylesheet/scss">
     .function-panel {
         display: block;
         overflow: hidden;
