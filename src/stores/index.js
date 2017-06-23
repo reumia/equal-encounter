@@ -6,13 +6,13 @@ Vue.use(Vuex);
 const state = {
     'markers': [],
     'places': [],
-    'showPanel': 'markers',
+    'visiblePanel': 'markers',
     'showPanelDetail': false
 };
 
 const mutations = {
-    visiblePanel (state, payload) {
-        state.showPanel = payload.name;
+    setVisiblePanel (state, payload) {
+        state.visiblePanel = payload.name;
     },
     replaceState (state, payload) {
         state[payload.target] = payload.data;
@@ -27,7 +27,7 @@ const mutations = {
 
 const actions = {
     setPanel (context, payload) {
-        context.commit('visiblePanel', payload);
+        context.commit('setVisiblePanel', payload);
     },
     replaceState (context, payload) {
         context.commit('replaceState', payload);
