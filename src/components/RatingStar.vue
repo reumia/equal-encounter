@@ -32,7 +32,7 @@
 
 <style lang="scss" scoped rel="stylesheet/scss">
     .rating-star {
-        margin-bottom: 2px;
+        margin-bottom: 4px;
     }
     .rating-star-on {
         width: 100%;

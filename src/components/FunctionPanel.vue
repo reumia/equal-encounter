@@ -11,7 +11,7 @@
         <div class="detail" :class="{active: getShowPanelDetail()}" @click="togglePanelDetail">
             <div class="detail-text">
                 <div class="title">{{ text }}</div>
-                <rating-star :rating="rating"></rating-star>
+                <rating-star v-if="rating" :rating="rating"></rating-star>
                 <div class="text">{{ getAddress() }}</div>
             </div>
             <div class="detail-image" v-if="images">
@@ -110,12 +110,18 @@
         &.active {
             transform: translateY(-100%);
         }
+        @media (min-width: 426px) {
+            flex-direction: row;
+        }
     }
     .detail-text {
         position: relative;
-        padding: 15px 15px 0;
+        padding: 15px 50px 12px 15px;
+        @media (min-width: 426px) {
+            padding-right: 100px;
+        }
         .title {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-size: 14px;
             font-weight: bold;
         }
@@ -124,7 +130,6 @@
     .detail-image {
         display: flex;
         position: relative;
-        margin: 15px 0 0 -1px;
         height: 100%;
         &:before {
             content: '';
@@ -134,6 +139,9 @@
             right: 0;
             bottom: 0;
             box-shadow: inset 0 2px 0 rgba(0,0,0,.1);
+            @media (min-width: 426px) {
+                box-shadow: inset 2px 0 0 rgba(0,0,0,.1);
+            }
         }
         .image {
             flex: 1;
@@ -141,6 +149,10 @@
             background-color: #333;
             background-size: cover;
             background-position: center center;
+        }
+        @media (min-width: 426px) {
+            flex: 1;
+            margin: 0;
         }
     }
 </style>
