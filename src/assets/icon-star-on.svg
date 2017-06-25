@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="21px" height="20px" viewBox="0 0 21 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-star-on</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFF700" offset="0%"></stop>
+            <stop stop-color="#FFC200" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-2" points="10.5105652 15.9252329 4.63271264 19 5.75528258 12.4875388 1 7.8753882 7.5716389 6.92523292 10.5105652 1 13.4494914 6.92523292 20.0211303 7.8753882 15.2658477 12.4875388 16.3884177 19"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-star-on">
+            <g id="Star">
+                <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+                <path stroke="#545454" stroke-width="1" d="M15.723854,18.0880803 L14.7282812,12.3123786 L18.9428334,8.2246826 L13.118186,7.38253051 L10.5105652,2.12524959 L7.90294431,7.38253051 L2.07829694,8.2246826 L6.29284912,12.3123786 L5.29727632,18.0880803 L10.5105652,15.3609536 L15.723854,18.0880803 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

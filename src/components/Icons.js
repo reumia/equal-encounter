@@ -7,8 +7,10 @@ import markerGreen from '../assets/icon-marker-green.svg';
 import markerBlue from '../assets/icon-marker-blue.svg';
 import markerViolet from '../assets/icon-marker-violet.svg';
 import markerRainbow from '../assets/icon-marker-rainbow.svg';
+import starOff from '../assets/icon-star-off.svg';
+import starOn from '../assets/icon-star-on.svg';
 
-let icons, markerIcons, averageMarkerIcon;
+let icons, markerIcons, averageMarkerIcon, starIcons;
 
 icons = {
     'markerRed': {
@@ -59,6 +61,20 @@ icons = {
             x: 30,
             y: 30
         }
+    },
+    'starOff': {
+        url: starOff,
+        size: {
+            x: 14,
+            y: 14
+        }
+    },
+    'starOn': {
+        url: starOn,
+        size: {
+            x: 14,
+            y: 14
+        }
     }
 };
 
@@ -73,8 +89,14 @@ markerIcons = [
 
 averageMarkerIcon = icons.markerRainbow;
 
+starIcons = {
+    off: icons.starOff,
+    on: icons.starOn
+};
+
 export {
     icons as default,
     markerIcons,
-    averageMarkerIcon
+    averageMarkerIcon,
+    starIcons
 }

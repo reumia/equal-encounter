@@ -68,7 +68,7 @@
                 geocoder: {},
                 map: {},
                 mapCenter: {lat: 37.5662952, lng: 126.9757564},
-                showIntroLayer: true,
+                showIntroLayer: false,
                 showConfirm: false,
                 showAside: false,
             }
