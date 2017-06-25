@@ -9,10 +9,8 @@
 
         <!-- 상세 -->
         <div class="detail" :class="{active: getShowPanelDetail()}" @click="togglePanelDetail">
-            <div class="detail-head">
-                <span class="text">{{ text }}</span>
-            </div>
-            <div class="detail-body">
+            <div class="detail-text">
+                <div class="title">{{ text }}</div>
                 <rating-star :rating="rating"></rating-star>
                 <div class="text">{{ getAddress() }}</div>
             </div>
@@ -113,17 +111,15 @@
             transform: translateY(-100%);
         }
     }
-    .detail-head {
+    .detail-text {
         position: relative;
         padding: 15px 15px 0;
-        .text {
+        .title {
+            margin-bottom: 5px;
             font-size: 14px;
             font-weight: bold;
         }
-    }
-    .detail-body {
-        margin-top: 6px;
-        padding: 0 15px;
+
     }
     .detail-image {
         display: flex;
@@ -137,7 +133,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            border: 1px solid rgba(0,0,0,.16);
+            box-shadow: inset 0 2px 0 rgba(0,0,0,.1);
         }
         .image {
             flex: 1;
